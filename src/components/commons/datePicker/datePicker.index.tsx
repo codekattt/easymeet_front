@@ -12,8 +12,10 @@ export default function DatePicker({
 }: DatePickerProps): JSX.Element {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [warningMessage, setWarningMessage] = useState('');
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const daysInMonth = (month: number, year: number) => {
     return new Date(year, month + 1, 0).getDate();
@@ -43,9 +45,9 @@ export default function DatePicker({
 
   const onClickDate = (day: number) => {
     const clickedDate = new Date(currentYear, currentMonth, day);
+    clickedDate.setHours(0, 0, 0, 0);
 
-    // 오늘 포함 이후 날짜만 선택 가능
-    if (clickedDate < today.setHours(0, 0, 0, 0)) {
+    if (clickedDate.getTime() < today.getTime()) {
       return;
     }
 
@@ -57,7 +59,6 @@ export default function DatePicker({
     );
 
     if (isSelected) {
-      // 이미 선택된 날짜를 클릭하면 해당 날짜를 선택 해제
       setSelectedDates(
         selectedDates.filter(
           (date) =>
@@ -68,11 +69,12 @@ export default function DatePicker({
             ),
         ),
       );
+      setWarningMessage('');
     } else if (selectedDates.length < 7) {
-      // 선택된 날짜가 7개 미만일 경우에만 새로운 날짜 추가
       setSelectedDates([...selectedDates, clickedDate]);
+      setWarningMessage('');
     } else {
-      alert('최대 7일까지 선택 가능합니다.');
+      setWarningMessage('날짜는 7개까지만 선택 가능합니다.');
     }
   };
 
@@ -96,7 +98,8 @@ export default function DatePicker({
         ))}
         {daysArray.map((day, index) => {
           const currentDate = new Date(currentYear, currentMonth, day);
-          const isValid = currentDate >= today.setHours(0, 0, 0, 0); // 오늘 포함 이후 날짜만 유효
+          currentDate.setHours(0, 0, 0, 0);
+          const isValid = currentDate.getTime() >= today.getTime();
           const isSelected = selectedDates.some(
             (date) =>
               date.getDate() === day &&
@@ -108,7 +111,7 @@ export default function DatePicker({
               key={index}
               isValid={isValid}
               isSelected={isSelected}
-              onClick={() => isValid && onClickDate(day)} // 유효한 날짜만 클릭 가능
+              onClick={() => isValid && onClickDate(day)}
             >
               <span>{day}</span>
             </S.Day>
@@ -119,22 +122,33 @@ export default function DatePicker({
   };
 
   return (
-    <S.DatePicker>
-      <S.Header>
-        <S.PrevButton onClick={onClickPrevMonth}>＜</S.PrevButton>
-        <S.CurrentMonth>
-          {currentYear}.{currentMonth + 1}
-        </S.CurrentMonth>
-        <S.NextButton onClick={onClickNextMonth}>＞</S.NextButton>
-      </S.Header>
-      <S.DaysOfWeek>
-        {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-          <S.DayOfWeek key={index}>
-            <span>{day}</span>
-          </S.DayOfWeek>
-        ))}
-      </S.DaysOfWeek>
-      <S.Days>{renderDays()}</S.Days>
-    </S.DatePicker>
+    <S.Wrapper>
+      <S.DatePicker>
+        <S.Header>
+          <S.PrevButton onClick={onClickPrevMonth}>
+            <img src="/images/icon/datepicker_prev_icon.svg" />
+          </S.PrevButton>
+          <S.CurrentMonth>
+            {currentYear}.{currentMonth + 1}
+          </S.CurrentMonth>
+          <S.NextButton onClick={onClickNextMonth}>
+            <img src="/images/icon/datepicker_next_icon.svg" />
+          </S.NextButton>
+        </S.Header>
+        <S.DaysOfWeek>
+          {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
+            <S.DayOfWeek key={index}>
+              <span>{day}</span>
+            </S.DayOfWeek>
+          ))}
+        </S.DaysOfWeek>
+        <S.Days>{renderDays()}</S.Days>
+      </S.DatePicker>
+      <div>
+        {warningMessage && (
+          <S.WarningMessage>{warningMessage}</S.WarningMessage>
+        )}
+      </div>
+    </S.Wrapper>
   );
 }

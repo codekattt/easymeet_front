@@ -5,8 +5,6 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  background-color: #f7f7f7;
-  margin: 40px 0;
 `;
 
 export const Container = styled.div`
@@ -17,6 +15,7 @@ export const Container = styled.div`
   max-width: 500px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
+  background-color: #f7f7f7;
 
   & img {
     max-width: 100%;
@@ -35,6 +34,11 @@ export const Container = styled.div`
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 20px;
+
+    & span {
+      color: #d92525;
+      margin-left: 4px;
+    }
   }
 
   & h3 {
@@ -74,18 +78,43 @@ export const Input = styled.input`
   border-radius: 10px;
 `;
 
-export const InputTime = styled.input`
-  width: 110px;
-  height: 38px;
-  border: 1px solid #6773ef;
-  border-radius: 10px;
-  margin-right: 5px;
-  padding: 10px 15px;
-`;
-
 export const Button = styled.button`
   width: 100%;
   height: 45px;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background-color: #ababab;
+  color: white;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `;
+
+export const SelectTimeStyles = {
+  control: (provided: any) => ({
+    ...provided,
+    width: '120px',
+    height: '38px',
+    padding: '0 12px',
+    border: '1px solid #6773ef',
+    borderRadius: '10px',
+    fontSize: '16px',
+    marginRight: '10px',
+  }),
+  valueContainer: (provided: any) => ({
+    ...provided,
+    padding: 0,
+  }),
+  indicatorsContainer: (provided: any) => ({
+    ...provided,
+    height: '100%',
+  }),
+  option: (provided: any) => ({
+    ...provided,
+    fontSize: '16px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+};

@@ -47,7 +47,7 @@ export default function TeamLeaderPage() {
           <AdditionalSettings nextStep={nextStep} prevStep={prevStep} />
         </SlideItem>
         <SlideItem>
-          <Complete prevStep={prevStep} />
+          <Complete />
         </SlideItem>
       </SlideWrapper>
     </SlideContainer>

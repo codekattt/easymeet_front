@@ -1,15 +1,21 @@
 import styled from '@emotion/styled';
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+`;
+
 export const DatePicker = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-width: 310px;
   border-radius: 20px;
   border: none;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin-bottom: 40px;
   padding: 40px 0;
 `;
 
@@ -25,15 +31,16 @@ export const PrevButton = styled.button`
   font-size: 30px;
   cursor: pointer;
   border: none;
-  margin: 0 30px;
+  margin: 0 12px;
   background-color: white;
 
   img {
     display: block;
+    margin: 0;
   }
 
-  &:hover img {
-    content: url('/images/icon/calendar-prev-icon-hover.svg'); /* hover 시 이미지를 변경 */
+  &:hover {
+    color: #6773ef;
   }
 `;
 
@@ -41,15 +48,16 @@ export const NextButton = styled.button`
   font-size: 30px;
   cursor: pointer;
   border: none;
-  margin: 0 30px;
+  margin: 0 12px;
   background-color: white;
 
   img {
     display: block;
+    margin: 0;
   }
 
-  &:hover img {
-    content: url('/images/icon/calendar-next-icon-hover.svg'); /* hover 시 이미지를 변경 */
+  &:hover {
+    color: #6773ef;
   }
 `;
 
@@ -60,7 +68,7 @@ export const CurrentMonth = styled.span`
 
 export const DaysOfWeek = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7개의 열로 균등하게 나누기 */
+  grid-template-columns: repeat(7, 1fr);
   width: 100%;
   padding: 15px 0;
 `;
@@ -75,7 +83,7 @@ export const DayOfWeek = styled.div`
 
 export const Days = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7개의 열로 균등하게 나누기 */
+  grid-template-columns: repeat(7, 1fr);
   width: 100%;
 `;
 
@@ -87,8 +95,9 @@ export const Day = styled.div<{
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 10px;
+  padding: 5px 5px;
   font-size: 20px;
+  width: 100%;
 
   & span {
     width: 35px;
@@ -99,13 +108,14 @@ export const Day = styled.div<{
     border-radius: 50%;
     background-color: ${({ isSelected }) => (isSelected ? '#6773EF' : '#fff')};
     color: ${({ isValid, isSelected }) =>
-      isValid ? (isSelected ? 'white' : 'black') : '#ddd'};
+      isValid ? (isSelected ? 'white' : 'ABABAB') : '#ABABAB'};
     cursor: ${({ isValid }) => (isValid ? 'pointer' : 'default')};
   }
 `;
 
-export const SelectedDate = styled.p`
-  margin-top: 20px;
-  font-size: 16px;
-  font-weight: bold;
+export const WarningMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin: 15px 0 0 20px;
+  text-align: left;
 `;

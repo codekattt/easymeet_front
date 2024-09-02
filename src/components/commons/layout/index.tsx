@@ -1,15 +1,10 @@
 import styled from '@emotion/styled';
+import LayoutHeader from './header/LayoutHeader.index';
 
 const Body = styled.div`
-  min-height: 498px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 5%;
-
-  @media screen and (max-width: 767px) {
-    padding: 40px 5%;
-  }
 `;
 
 interface ILayoutProps {
@@ -19,9 +14,8 @@ interface ILayoutProps {
 export default function Layout(props: ILayoutProps): JSX.Element {
   return (
     <>
-      {/* <LayoutHeader /> */}
+      <LayoutHeader />
       <Body>{props.children}</Body>
-      {/* <LayoutFooter /> */}
     </>
   );
 }
