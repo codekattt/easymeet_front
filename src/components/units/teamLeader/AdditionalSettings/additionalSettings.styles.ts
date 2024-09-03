@@ -92,11 +92,14 @@ export const SelectTimeStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    width: '166px',
-    marginTop: '0px', // 드롭다운이 컨트롤 바로 아래 붙도록 설정
-    borderRadius: '10px', // 드롭다운 모서리 둥글게
-    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // 그림자 설정
-    border: '1px solid #6773ef', // 경계선 설정
+    width: '168px',
+    marginTop: '-8px', // 드롭다운이 컨트롤 바로 아래 붙도록 설정
+    marginLeft: '-1px',
+    borderRadius: '0 0 10px 10px', // 드롭다운 모서리 둥글게
+    boxShadow: '0px 4px 10px rgba(38, 132, 255, 0.1)', // 그림자 설정
+    border: '2px solid #6773ef', // 경계선 설정
+    borderTop: 'none',
+    borderColor: '#2684ff',
     zIndex: 2, // 다른 요소 위에 보이도록 설정
   }),
   option: (provided: any, state: any) => ({
@@ -119,7 +122,19 @@ export const SelectTimeStyles = {
   }),
 };
 
-export const Button = styled.button`
+export const PassButton = styled.span`
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.point1};
+  margin-top: 170px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.point2};
+  }
+`;
+
+export const SubmitButton = styled.button`
   width: 100%;
   height: 45px;
   font-size: 20px;
@@ -128,5 +143,17 @@ export const Button = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 170px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.point2};
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
 `;

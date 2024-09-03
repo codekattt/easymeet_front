@@ -1,8 +1,16 @@
 import * as S from './complete.styles';
-import Script from 'next/script';
 
 export default function Complete() {
-  const onClickCopyLink = () => {};
+  const onClickCopyLink = async () => {
+    const link = window.location.href;
+    try {
+      await navigator.clipboard.writeText(link);
+      alert('링크가 클립보드에 복사되었습니다!');
+    } catch (err) {
+      alert('링크 복사에 실패했습니다. 다시 시도해주세요.');
+      console.error('Failed to copy the link: ', err);
+    }
+  };
 
   const onClickCheckMyTime = () => {};
 

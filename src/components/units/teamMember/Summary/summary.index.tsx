@@ -4,7 +4,7 @@ export default function Summary() {
   return (
     <S.Wrapper>
       <S.Container>
-        <div>title</div>
+        <S.Section></S.Section>
       </S.Container>
     </S.Wrapper>
   );

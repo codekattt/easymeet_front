@@ -78,17 +78,11 @@ export const Input = styled.input`
   border-radius: 10px;
 `;
 
-export const Button = styled.button`
-  width: 100%;
-  height: 45px;
-  font-size: 20px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  background-color: #ababab;
-  color: white;
-  margin-top: 30px;
-  margin-bottom: 30px;
+export const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
 `;
 
 export const SelectTimeStyles = {
@@ -113,8 +107,51 @@ export const SelectTimeStyles = {
   option: (provided: any) => ({
     ...provided,
     fontSize: '16px',
+    paddingLeft: '14px',
   }),
   indicatorSeparator: () => ({
     display: 'none',
   }),
+  menu: (provided: any) => ({
+    ...provided,
+    width: '122px',
+    marginTop: '-8px', // 드롭다운이 컨트롤 바로 아래 붙도록 설정
+    marginLeft: '-1px',
+    borderRadius: '0 0 10px 10px', // 드롭다운 모서리 둥글게
+    boxShadow: '0px 4px 10px rgba(38, 132, 255, 0.1)', // 그림자 설정
+    border: '2px solid #6773ef', // 경계선 설정
+    borderTop: 'none',
+    borderColor: '#2684ff',
+    zIndex: 2, // 다른 요소 위에 보이도록 설정
+    scrollbarWidth: 'none',
+  }),
 };
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const Button = styled.button`
+  width: 100%;
+  height: 45px;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.point1};
+  color: white;
+  margin-top: 170px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.point2};
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: white;
+    cursor: default;
+  }
+`;

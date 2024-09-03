@@ -1,6 +1,11 @@
 import * as S from './selectTime.styles';
 
-export default function SelectTime() {
+interface SelectTimeProps {
+  nextStep: () => void;
+  prevStep: () => void;
+}
+
+export default function SelectTime({ nextStep, prevStep }: SelectTimeProps) {
   return (
     <S.Wrapper>
       <S.Container>

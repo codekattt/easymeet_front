@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from './createMeeting.styles';
 import DatePicker from '../../../commons/datePicker/datePicker.index';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 
 interface CreateMeetingProps {
   nextStep: () => void;
@@ -10,6 +10,24 @@ interface CreateMeetingProps {
 export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [meetingType, setMeetingType] = useState('date');
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  const [selectedStartTime, setSelectedStartTime] = useState<
+    SingleValue<{ value: string; label: string }>
+  >({
+    value: '09:00',
+    label: '09:00',
+  });
+  const [selectedEndTime, setSelectedEndTime] = useState<
+    SingleValue<{ value: string; label: string }>
+  >({
+    value: '24:00',
+    label: '24:00',
+  });
+
+  const [endTimeOptions, setEndTimeOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMeetingType(event.target.value);
@@ -25,6 +43,31 @@ export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
   };
 
   const timeOptions = generateTimeOptions();
+
+  useEffect(() => {
+    if (selectedStartTime) {
+      const startHour = parseInt(selectedStartTime.value.split(':')[0], 10);
+      const updatedOptions = timeOptions.filter(
+        (option) => parseInt(option.value.split(':')[0], 10) > startHour,
+      );
+      setEndTimeOptions(updatedOptions);
+      setSelectedEndTime(updatedOptions[updatedOptions.length - 1]);
+    }
+  }, [selectedStartTime]);
+
+  useEffect(() => {
+    if (
+      (meetingType === 'date' &&
+        selectedDates.length > 0 &&
+        selectedStartTime &&
+        selectedEndTime) ||
+      (meetingType === 'weekday' && selectedStartTime && selectedEndTime)
+    ) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [meetingType, selectedDates, selectedStartTime, selectedEndTime]);
 
   return (
     <S.Wrapper>
@@ -68,40 +111,34 @@ export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
           <h2>
             회의 시간은<span>*</span>
           </h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: '15px',
-            }}
-          >
-            <Select options={timeOptions} styles={S.SelectTimeStyles} />
+          <S.SelectWrapper>
+            <Select
+              options={timeOptions}
+              styles={S.SelectTimeStyles}
+              onChange={(option) => setSelectedStartTime(option)}
+              value={selectedStartTime}
+            />
             <h3>보다 이후,</h3>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <Select options={timeOptions} styles={S.SelectTimeStyles} />
+          </S.SelectWrapper>
+          <S.SelectWrapper>
+            <Select
+              options={endTimeOptions}
+              styles={S.SelectTimeStyles}
+              onChange={(option) => setSelectedEndTime(option)}
+              value={selectedEndTime}
+            />
             <h3>보다 이전으로 선택할거예요</h3>
-          </div>
+          </S.SelectWrapper>
         </S.Section>
         <S.Section>
           <h2>회의의 이름을 지어주세요</h2>
           <S.Input type="text" placeholder="선택" />
         </S.Section>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <S.Button onClick={nextStep}>일정 페이지 생성하기</S.Button>
-        </div>
+        <S.ButtonWrapper>
+          <S.Button onClick={nextStep} disabled={!isButtonEnabled}>
+            일정 페이지 생성하기
+          </S.Button>
+        </S.ButtonWrapper>
       </S.Container>
     </S.Wrapper>
   );

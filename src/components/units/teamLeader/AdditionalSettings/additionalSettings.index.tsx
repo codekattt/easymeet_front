@@ -53,7 +53,7 @@ export default function AdditionalSettings({
             options={timeOptions}
             styles={S.SelectTimeStyles}
             defaultValue={timeOptions[1]}
-            menuIsOpen={true}
+            // menuIsOpen={true}
           />
         </S.Section>
         <S.Section>
@@ -66,7 +66,8 @@ export default function AdditionalSettings({
           />
           {showInput && <S.Input type="text" placeholder={placeholder} />}
         </S.Section>
-        <S.Button onClick={nextStep}>건너뛰기</S.Button>
+        <S.PassButton>건너뛰기 ＞</S.PassButton>
+        <S.SubmitButton onClick={nextStep}>추가 설정 입력</S.SubmitButton>
       </S.Container>
     </S.Wrapper>
   );
