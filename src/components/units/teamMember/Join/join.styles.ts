@@ -33,7 +33,7 @@ export const Container = styled.div`
   & h2 {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     & span {
       color: #d92525;
@@ -44,6 +44,7 @@ export const Container = styled.div`
   & h3 {
     font-size: 16px;
     font-weight: 300;
+    margin-bottom: 16px;
   }
 `;
 
@@ -57,7 +58,28 @@ export const Section = styled.section`
   padding-bottom: 26px;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 7px 0;
+  margin: 0 0 30px 0;
+`;
+
+export const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 14px 0 0 12px;
+`;
+
+export const Text = styled.h3`
+  font-size: 25px !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+  padding-bottom: 8px;
+  color: ${({ theme }) => theme.colors.point2};
+`;
+
+export const TextBold = styled.h3`
+  font-size: 25px !important;
+  font-weight: 700 !important;
+  padding-bottom: 8px;
+  color: ${({ theme }) => theme.colors.point2};
 `;
 
 export const Input = styled.input`
@@ -66,6 +88,19 @@ export const Input = styled.input`
   padding: 10px 15px;
   border: 1px solid #6773ef;
   border-radius: 10px;
+  margin-bottom: 26px;
+`;
+
+export const SubButton = styled.span`
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.point1};
+  margin-top: 170px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.point2};
+  }
 `;
 
 export const ButtonWrapper = styled.div`
@@ -82,7 +117,7 @@ export const Button = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 170px;
+  margin-top: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

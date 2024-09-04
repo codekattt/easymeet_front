@@ -33,7 +33,8 @@ export const Container = styled.div`
   & h2 {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: white;
 
     & span {
       color: #d92525;
@@ -43,19 +44,69 @@ export const Container = styled.div`
 
   & h3 {
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
+    color: white;
+
+    & span {
+      color: orange;
+      font-weight: 700;
+    }
   }
+`;
+
+export const H2 = styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: ${({ theme }) => theme.colors.fontMain}!important;
+`;
+
+export const H3 = styled.h3`
+  font-size: 16px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.subFont1}!important;
+  margin-bottom: 20px;
 `;
 
 export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  border: none;
+  border: 2px solid;
+  border-color: ${({ theme }) => theme.colors.point1};
   padding-top: 25px;
   padding-left: 15px;
   padding-bottom: 26px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.point2};
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 7px 0;
+  margin: 0 0 30px 0;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const Button = styled.button`
+  width: 100%;
+  height: 45px;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.point1};
+  color: white;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.point2};
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: white;
+    cursor: default;
+  }
 `;

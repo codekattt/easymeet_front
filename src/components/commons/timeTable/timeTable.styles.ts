@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
-export const hours = Array.from({ length: 16 }, (_, i) => `${i + 9}:00`);
-export const dates = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+export const hours = Array.from({ length: 16 }, (_, i) => `${i + 9}`);
+export const dates = ['월', '화', '수', '목', '금', '토', '일'];
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 `;
 
 export const TimeTableGrid = styled.div`
@@ -27,6 +26,7 @@ export const HeaderCell = styled.div`
   background-color: #f7f7f7;
   border: 1px solid #ccc;
   font-weight: bold;
+  background-color: orange;
 `;
 
 export const TimeCell = styled.div<{ selected: boolean }>`
