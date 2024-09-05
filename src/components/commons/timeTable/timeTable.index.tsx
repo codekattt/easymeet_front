@@ -89,7 +89,7 @@
 // }
 
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
+import * as S from './timeTable.styles';
 
 // 시간과 날짜 데이터
 const hours = Array.from({ length: 16 }, (_, i) => i + 9); // 9시부터 24시까지
@@ -102,88 +102,6 @@ const dates = [
   { day: '9/16', week: '월' },
   { day: '9/17', week: '화' },
 ];
-
-// 스타일 정의
-const TimeTableContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const TimeColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1.2rem;
-  margin-top: 4rem;
-  padding-right: 1rem;
-  font-size: 0.8rem;
-  color: rgb(85, 85, 85);
-`;
-
-const DateRow = styled.div`
-  display: flex;
-  gap: 1px;
-  padding-left: 1px;
-  margin-bottom: 1rem;
-`;
-
-const DateCell = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.13rem;
-  width: 2.4rem;
-`;
-
-const DaySpan = styled.span`
-  display: flex;
-  align-items: center;
-  word-break: keep-all;
-  color: rgb(85, 85, 85);
-  font-weight: 600;
-  font-size: 0.7rem;
-  line-height: 1.6rem;
-`;
-
-const WeekSpan = styled.span`
-  display: flex;
-  align-items: center;
-  word-break: keep-all;
-  color: rgb(58, 50, 218);
-  font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 1.4rem;
-`;
-
-const TimeSelectionGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const TimeCell = styled.div<{ selected: boolean }>`
-  width: 2.4rem;
-  height: 1.3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  border: 1px solid rgb(63, 63, 63);
-  background: ${({ selected }) => (selected ? '#007bff' : 'white')};
-  color: ${({ selected }) => (selected ? 'white' : 'black')};
-  transition: background 0.2s ease;
-
-  &:hover {
-    background-color: ${({ selected }) => (selected ? '#0056b3' : '#f0f0f0')};
-  }
-`;
-
-const TimeTableWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`;
 
 // 타임테이블 컴포넌트
 export default function TimeTable() {
@@ -213,32 +131,49 @@ export default function TimeTable() {
   };
 
   return (
-    <TimeTableWrapper>
+    <S.TimeTableWrapper>
       {/* 시간 열 */}
-      <TimeColumn>
+      <S.TimeColumn>
         {hours.map((hour) => (
-          <div key={hour}>{hour}:00</div>
+          <div key={hour}>{hour}</div>
         ))}
-      </TimeColumn>
+      </S.TimeColumn>
 
-      <TimeTableContainer>
+      <S.TimeTableContainer>
         {/* 요일 영역 */}
-        <DateRow>
+        <S.DateRow>
           {dates.map((date) => (
-            <DateCell key={date.day}>
-              <DaySpan>{date.day}</DaySpan>
-              <WeekSpan>{date.week}</WeekSpan>
-            </DateCell>
+            <S.DateCell key={date.day}>
+              <S.DaySpan>{date.day}</S.DaySpan>
+              <S.WeekSpan>{date.week}</S.WeekSpan>
+            </S.DateCell>
           ))}
-        </DateRow>
+        </S.DateRow>
 
         {/* 시간 선택 셀 */}
-        <TimeSelectionGrid>
-          <TimeCell selected={true}>1</TimeCell>
-          <TimeCell selected={true}>2</TimeCell>
-          <TimeCell selected={true}>3</TimeCell>
-        </TimeSelectionGrid>
-      </TimeTableContainer>
-    </TimeTableWrapper>
+        <S.TimeSelectWrapper>
+          <S.TimeCellWrapper>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+            <S.TimeCell selected={true}>
+              <S.InnerTimeCell></S.InnerTimeCell>
+            </S.TimeCell>
+          </S.TimeCellWrapper>
+        </S.TimeSelectWrapper>
+      </S.TimeTableContainer>
+    </S.TimeTableWrapper>
   );
 }

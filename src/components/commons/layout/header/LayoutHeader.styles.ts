@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
 `;
 
 export const InnerWrapper = styled.div`
@@ -18,6 +17,7 @@ export const InnerWrapper = styled.div`
   font-size: 16px;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.colors.menuDivide};
+  background-color: white;
   padding: 12px 0;
 `;
 
@@ -29,5 +29,9 @@ export const InnerLogo = styled.div`
 
   :hover {
     color: ${({ theme }) => theme.colors.point2};
+  }
+
+  & img {
+    width: 162px;
   }
 `;

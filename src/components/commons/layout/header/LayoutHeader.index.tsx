@@ -5,7 +5,9 @@ export default function LayoutHeader(): JSX.Element {
     <>
       <S.Wrapper>
         <S.InnerWrapper>
-          <S.InnerLogo>EasyMeet</S.InnerLogo>
+          <S.InnerLogo>
+            <img src="/images/icon/cuthen_logo.png" />
+          </S.InnerLogo>
         </S.InnerWrapper>
       </S.Wrapper>
     </>

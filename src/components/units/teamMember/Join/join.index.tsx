@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import * as S from './join.styles';
 
 interface JoinProps {
@@ -5,6 +6,12 @@ interface JoinProps {
 }
 
 export default function Join({ nextStep }: JoinProps) {
+  const router = useRouter();
+
+  const onClickMoveToPage = () => {
+    router.push('/mememem');
+  };
+
   return (
     <S.Wrapper>
       <S.Container>
@@ -20,7 +27,9 @@ export default function Join({ nextStep }: JoinProps) {
           <h3>팀원들이 알아볼 수 있는 이름이어야 해요!</h3>
           <S.Input placeholder="참여자 이름" />
         </S.Section>
-        <S.SubButton>제출했던 시간을 수정하고 싶어요 ＞</S.SubButton>
+        <S.SubButton onClick={onClickMoveToPage}>
+          제출했던 시간을 수정하고 싶어요 ＞
+        </S.SubButton>
         <S.ButtonWrapper>
           <S.Button onClick={nextStep}>가능한 시간 입력</S.Button>
         </S.ButtonWrapper>
