@@ -79,7 +79,7 @@ export const Section = styled.section`
   padding-bottom: 26px;
   background-color: ${({ theme }) => theme.colors.point2};
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 30px 0;
+  margin: 0 0 12px 0;
 `;
 
 export const ButtonWrapper = styled.div`

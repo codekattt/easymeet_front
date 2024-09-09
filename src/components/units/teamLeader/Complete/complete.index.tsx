@@ -18,10 +18,7 @@ export default function Complete() {
     <S.Wrapper>
       <S.Container>
         <S.Section>
-          <img
-            src="/images/icon/complete_check_icon.webp"
-            alt="모임 스케줄 생성 완료"
-          />
+          <img src="/images/icon/check_icon.apng" alt="check icon" />
           <span>
             순식간에 회의페이지 생성 완료!
             <br />

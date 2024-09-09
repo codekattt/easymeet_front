@@ -7,6 +7,29 @@ export const Wrapper = styled.div`
   width: 100vw;
 `;
 
+export const RowWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 4px;
+
+  & h1 {
+    margin: 0 0 8px 4px;
+    margin-bottom: 8px;
+  }
+
+  & h2 {
+    color: ${({ theme }) => theme.colors.subFont1};
+    font-weight: 400;
+    margin: 0 0 6px 8px;
+  }
+
+  & img {
+    width: 34px;
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,10 +75,9 @@ export const Section = styled.section`
   height: auto;
   border-radius: 20px;
   border: none;
-  padding-top: 25px;
-  padding-left: 15px;
+  padding: 25px 15px 0;
   padding-bottom: 26px;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 7px 0;
+  margin: 8px 0 4px 0;
 `;

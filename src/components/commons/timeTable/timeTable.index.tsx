@@ -1,140 +1,239 @@
-import { useState, useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import * as S from './timeTable.styles';
 
-const days: string[] = ['월', '화', '수', '목', '금', '토', '일'];
-
-interface SelectedTimes {
-  [key: string]: boolean;
-}
-
-const generateTimeSlots = (start: number, end: number) => {
-  const timeSlots: string[] = [];
-  for (let i = start; i <= end; i++) {
-    const hour = i < 10 ? `0${i}` : `${i}`;
-    timeSlots.push(hour);
-  }
-  return timeSlots;
+type CellPosition = {
+  rowIndex: number;
+  cellIndex: number;
+  subIndex: number;
+  key: string;
 };
 
-export default function TimeTable() {
-  const [selectedDays, setSelectedDays] = useState<string[]>([]);
-  const [selectedTimes, setSelectedTimes] = useState<SelectedTimes>({});
-  const [hours, setHours] = useState<string[]>([]);
-  const [lastHour, setLastHour] = useState<string>('');
-  const [rangeStart, setRangeStart] = useState<string | null>(null);
+type Range = {
+  start: CellPosition;
+  end: CellPosition;
+  cells: string[]; // 범위 내의 셀 키값 저장
+};
 
-  useEffect(() => {
-    const dbSelectedDays = ['월', '수', '금'];
-    setSelectedDays(dbSelectedDays);
-    const dbStartHour = 9;
-    const dbEndHour = 18;
-    setHours(generateTimeSlots(dbStartHour, dbEndHour));
-    setLastHour((dbEndHour + 1).toString());
-  }, []);
+export default function TimeTable({
+  timesFromDB = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+  daysFromDB = [
+    { date: '10/1', day: '월' },
+    { date: '10/2', day: '화' },
+    { date: '10/3', day: '수' },
+    { date: '10/4', day: '목' },
+  ],
+}) {
+  const totalDays = 7;
+  const timesForCells = timesFromDB.slice(0, -1);
 
-  const toggleTime = (day: string, time: string) => {
-    const key = `${day}-${time}`;
-    if (!rangeStart) {
-      setRangeStart(key);
-      setSelectedTimes((prev) => ({
-        ...prev,
-        [key]: true,
-      }));
-    } else {
-      setSelectedTimes((prev) => {
-        const newSelectedTimes = { ...prev };
-        const rangeEnd = key;
-        const [startDay, startTime] = rangeStart.split('-');
-        const [endDay, endTime] = rangeEnd.split('-');
+  const [selectedStart, setSelectedStart] = useState<CellPosition | null>(null);
+  const [selectedEnd, setSelectedEnd] = useState<CellPosition | null>(null);
+  const [selectedRanges, setSelectedRanges] = useState<Range[]>([]); // 범위 객체 저장
 
-        if (startDay === endDay) {
-          const startIndex = hours.indexOf(startTime.split('-')[0]);
-          const endIndex = hours.indexOf(endTime.split('-')[0]);
-          const startMin = startTime.split('-')[1];
-          const endMin = endTime.split('-')[1];
+  const generateCellKey = (
+    rowIndex: number,
+    cellIndex: number,
+    subIndex: number,
+  ): string => {
+    const dayString = `10${rowIndex + 1}`;
+    const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
+      timesFromDB[cellIndex]
+    }`;
+    const subString = subIndex === 0 ? '00' : '30';
+    return `${dayString}${timeString}${subString}`;
+  };
 
-          for (
-            let i = Math.min(startIndex, endIndex);
-            i <= Math.max(startIndex, endIndex);
-            i++
-          ) {
-            newSelectedTimes[`${day}-${hours[i]}-00`] = true;
-            newSelectedTimes[`${day}-${hours[i]}-30`] = true;
+  // 범위에서 선택된 모든 셀을 저장하는 함수
+  const generateRangeCells = (
+    start: CellPosition,
+    end: CellPosition,
+  ): string[] => {
+    const cells: string[] = [];
+    const {
+      rowIndex: startRow,
+      cellIndex: startCell,
+      subIndex: startSub,
+    } = start;
+    const { rowIndex: endRow, cellIndex: endCell, subIndex: endSub } = end;
+
+    if (startRow === endRow) {
+      // 순차적 선택
+      if (
+        startCell < endCell ||
+        (startCell === endCell && startSub <= endSub)
+      ) {
+        for (let i = startCell; i <= endCell; i++) {
+          if (i === startCell) {
+            for (let j = startSub; j <= 1; j++) {
+              cells.push(generateCellKey(startRow, i, j));
+            }
+          } else if (i === endCell) {
+            for (let j = 0; j <= endSub; j++) {
+              cells.push(generateCellKey(startRow, i, j));
+            }
+          } else {
+            cells.push(generateCellKey(startRow, i, 0));
+            cells.push(generateCellKey(startRow, i, 1));
           }
         }
-        return newSelectedTimes;
-      });
-      setRangeStart(null); // Reset range start
+      } else {
+        // 역순 선택
+        for (let i = startCell; i >= endCell; i--) {
+          if (i === startCell) {
+            for (let j = startSub; j >= 0; j--) {
+              cells.push(generateCellKey(startRow, i, j));
+            }
+          } else if (i === endCell) {
+            for (let j = 1; j >= endSub; j--) {
+              cells.push(generateCellKey(startRow, i, j));
+            }
+          } else {
+            cells.push(generateCellKey(startRow, i, 0));
+            cells.push(generateCellKey(startRow, i, 1));
+          }
+        }
+      }
+    }
+    return cells;
+  };
+
+  // 클릭된 셀이 선택된 범위에 있는지 확인하는 함수
+  const findRangeContainingCell = (key: string): Range | null => {
+    for (const range of selectedRanges) {
+      if (range.cells.includes(key)) {
+        return range;
+      }
+    }
+    return null;
+  };
+
+  // 셀 클릭 핸들러
+  const handleCellClick = (
+    rowIndex: number,
+    cellIndex: number,
+    subIndex: number,
+  ) => {
+    const key = generateCellKey(rowIndex, cellIndex, subIndex);
+
+    const existingRange = findRangeContainingCell(key);
+
+    if (existingRange) {
+      // 선택된 범위 내의 셀이 클릭되면 해당 범위 전체 해제
+      setSelectedRanges((prevRanges) =>
+        prevRanges.filter((range) => range !== existingRange),
+      );
+      return;
+    }
+
+    if (!selectedStart) {
+      setSelectedStart({ rowIndex, cellIndex, subIndex, key });
+      return;
+    }
+
+    const newEndCell = { rowIndex, cellIndex, subIndex, key };
+
+    // 같은 열(rowIndex)에서만 범위 설정
+    if (selectedStart.rowIndex === rowIndex) {
+      const rangeCells = generateRangeCells(selectedStart, newEndCell);
+
+      const newRange: Range = {
+        start: selectedStart,
+        end: newEndCell,
+        cells: rangeCells,
+      };
+
+      setSelectedRanges((prevRanges) => [...prevRanges, newRange]);
+      setSelectedStart(null); // 범위 선택 후 초기화
+      setSelectedEnd(null); // 끝 셀 초기화
+    } else {
+      // 다른 열(rowIndex) 선택 시: 새로 선택 시작
+      setSelectedStart(null);
     }
   };
 
+  const isSelected = (key: string): boolean => {
+    return selectedRanges.some((range) => range.cells.includes(key));
+  };
+
+  const isStart = (key: string): boolean => {
+    return selectedStart?.key === key || selectedEnd?.key === key;
+  };
+
+  const isEnd = (key: string): boolean => {
+    return selectedEnd?.key === key;
+  };
+
   return (
-    <div>
-      <h1>팀원 가능한 시간 선택</h1>
+    <>
       <S.Wrapper>
-        <S.Table>
-          <thead>
-            <tr>
-              <th></th>
-              {days.map((day) => (
-                <S.HeaderCell key={day} isActive={selectedDays.includes(day)}>
-                  {day}
-                </S.HeaderCell>
+        <S.TimeWrapper>
+          {timesFromDB.map((time, index) => (
+            <Fragment key={index}>
+              <span>{time}</span>
+              <span></span>
+            </Fragment>
+          ))}
+        </S.TimeWrapper>
+
+        <S.WeekWrapper>
+          <S.DayWrapper>
+            {Array(totalDays)
+              .fill(0)
+              .map((_, rowIndex) => {
+                const dayData = daysFromDB[rowIndex];
+                return (
+                  <S.Day key={rowIndex}>
+                    {dayData ? (
+                      <>
+                        <span>{dayData.date}</span>
+                        <span>{dayData.day}</span>
+                      </>
+                    ) : (
+                      <span style={{ visibility: 'hidden' }}>빈 공간</span>
+                    )}
+                  </S.Day>
+                );
+              })}
+          </S.DayWrapper>
+
+          <S.CellWrapper>
+            {Array(totalDays)
+              .fill(0)
+              .map((_, rowIndex) => (
+                <div key={rowIndex} style={{ width: '100%' }}>
+                  {rowIndex < daysFromDB.length ? (
+                    timesForCells.map((_, cellIndex) => (
+                      <Fragment key={cellIndex}>
+                        {Array(2)
+                          .fill(0)
+                          .map((_, subIndex) => {
+                            const key = generateCellKey(
+                              rowIndex,
+                              cellIndex,
+                              subIndex,
+                            );
+                            return (
+                              <S.Cell
+                                key={key}
+                                isSelected={isSelected(key)}
+                                isStart={isStart(key)}
+                                isEnd={isEnd(key)}
+                                onClick={() =>
+                                  handleCellClick(rowIndex, cellIndex, subIndex)
+                                }
+                              />
+                            );
+                          })}
+                      </Fragment>
+                    ))
+                  ) : (
+                    <div style={{ visibility: 'hidden' }}>빈 셀</div>
+                  )}
+                </div>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {hours.map((hour) => (
-              <>
-                <tr key={`${hour}-00`}>
-                  <th
-                    style={{
-                      paddingRight: '10px',
-                      transform: 'translateY(-14px)',
-                    }}
-                  >
-                    {hour}
-                  </th>
-                  {days.map((day) => {
-                    const key = `${day}-${hour}-00`;
-                    const isSelected = selectedTimes[key];
-                    return (
-                      <S.Cell
-                        key={key}
-                        isActive={selectedDays.includes(day)}
-                        isSelected={isSelected}
-                        onClick={() => toggleTime(day, `${hour}-00`)}
-                      />
-                    );
-                  })}
-                </tr>
-                <tr key={`${hour}-30`}>
-                  <th></th>
-                  {days.map((day) => {
-                    const key = `${day}-${hour}-30`;
-                    const isSelected = selectedTimes[key];
-                    return (
-                      <S.Cell
-                        key={key}
-                        isActive={selectedDays.includes(day)}
-                        isSelected={isSelected}
-                        onClick={() => toggleTime(day, `${hour}-30`)}
-                      />
-                    );
-                  })}
-                </tr>
-              </>
-            ))}
-            <tr>
-              <th
-                style={{ paddingRight: '10px', transform: 'translateY(-8px)' }}
-              >
-                {lastHour}
-              </th>
-            </tr>
-          </tbody>
-        </S.Table>
+          </S.CellWrapper>
+        </S.WeekWrapper>
       </S.Wrapper>
-    </div>
+    </>
   );
 }

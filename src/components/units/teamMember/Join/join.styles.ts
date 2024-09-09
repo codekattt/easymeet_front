@@ -53,12 +53,14 @@ export const Section = styled.section`
   height: auto;
   border-radius: 20px;
   border: none;
-  padding-top: 25px;
-  padding-left: 15px;
-  padding-bottom: 26px;
+  padding: 25px 15px;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
   margin: 0 0 30px 0;
+
+  & img {
+    max-width: 90px;
+  }
 `;
 
 export const TextWrapper = styled.div`
