@@ -25,8 +25,12 @@ export default function Complete() {
             팀원들에게 공유해보세요
           </span>
         </S.Section>
-        <S.Button onClick={onClickCopyLink}>링크복사</S.Button>
-        <S.Button onClick={onClickCheckMyTime}>나도 가능시간 입력하기</S.Button>
+        <S.ButtonWrapper>
+          <S.Button onClick={onClickCopyLink}>링크복사</S.Button>
+          <S.Button onClick={onClickCheckMyTime}>
+            나도 가능시간 입력하기
+          </S.Button>
+        </S.ButtonWrapper>
       </S.Container>
     </S.Wrapper>
   );

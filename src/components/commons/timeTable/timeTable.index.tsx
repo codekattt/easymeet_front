@@ -22,6 +22,7 @@ export default function TimeTable({
     { date: '10/3', day: '수' },
     { date: '10/4', day: '목' },
   ],
+  isReadOnly = false,
 }) {
   const totalDays = 7;
   const timesForCells = timesFromDB.slice(0, -1);
@@ -113,6 +114,8 @@ export default function TimeTable({
     cellIndex: number,
     subIndex: number,
   ) => {
+    if (isReadOnly) return;
+
     const key = generateCellKey(rowIndex, cellIndex, subIndex);
 
     const existingRange = findRangeContainingCell(key);
@@ -219,6 +222,7 @@ export default function TimeTable({
                                 isStart={isStart(key)}
                                 isEnd={isEnd(key)}
                                 onClick={() =>
+                                  !isReadOnly &&
                                   handleCellClick(rowIndex, cellIndex, subIndex)
                                 }
                               />

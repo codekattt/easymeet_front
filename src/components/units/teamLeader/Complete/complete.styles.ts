@@ -1,20 +1,19 @@
 import styled from '@emotion/styled';
-import { theme } from '../../../../commons/styles/theme';
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   max-width: 500px;
+  min-height: 680px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   background-color: #f7f7f7;
@@ -67,16 +66,32 @@ export const Section = styled.section`
   margin: 0 0 120px 0;
 
   & img {
-    margin-top: 30px;
+    width: 250px;
+    margin-top: 20px;
   }
 
   & span {
     font-size: 20px;
     font-weight: 700;
+    line-height: 1.4;
     text-align: center;
-    margin-top: 30px;
+    margin: 30px 0;
     color: ${({ theme }) => theme.colors.fontMain};
   }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f7f7;
+  padding: 20px;
 `;
 
 export const Button = styled.button`
@@ -89,4 +104,16 @@ export const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
   margin-bottom: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.point2};
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: white;
+    cursor: default;
+  }
 `;

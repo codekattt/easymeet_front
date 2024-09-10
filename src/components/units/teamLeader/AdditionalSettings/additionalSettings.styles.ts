@@ -5,15 +5,15 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   max-width: 500px;
+  min-height: 680px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   background-color: #f7f7f7;
@@ -122,10 +122,24 @@ export const SelectTimeStyles = {
   }),
 };
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f7f7;
+  padding: 20px;
+`;
+
 export const PassButton = styled.span`
   font-size: 18px;
+  padding-bottom: 20px;
   color: ${({ theme }) => theme.colors.point1};
-  margin-top: 170px;
   text-align: center;
   cursor: pointer;
 
@@ -134,7 +148,7 @@ export const PassButton = styled.span`
   }
 `;
 
-export const SubmitButton = styled.button`
+export const Button = styled.button`
   width: 100%;
   height: 45px;
   font-size: 20px;
@@ -143,7 +157,6 @@ export const SubmitButton = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -153,7 +166,7 @@ export const SubmitButton = styled.button`
 
   &:disabled {
     background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
+    color: white;
+    cursor: default;
   }
 `;

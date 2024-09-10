@@ -4,7 +4,6 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 `;
 
 export const Container = styled.div`
@@ -52,9 +51,7 @@ export const Section = styled.section`
   height: auto;
   border-radius: 20px;
   border: none;
-  padding-top: 25px;
-  padding-left: 15px;
-  padding-bottom: 26px;
+  padding: 25px 15px;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
   margin: 0 0 7px 0;
@@ -130,6 +127,14 @@ export const SelectTimeStyles = {
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f7f7;
+  padding: 20px;
 `;
 
 export const Button = styled.button`
@@ -141,7 +146,6 @@ export const Button = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 170px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

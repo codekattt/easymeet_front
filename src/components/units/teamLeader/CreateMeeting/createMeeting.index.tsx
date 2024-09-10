@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import * as S from './createMeeting.styles';
 import DatePicker from '../../../commons/datePicker/datePicker.index';
 import Select, { SingleValue } from 'react-select';
+import { useRouter } from 'next/router';
 
-interface CreateMeetingProps {
-  nextStep: () => void;
-}
-
-export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
+export default function CreateMeeting() {
+  const router = useRouter();
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [meetingType, setMeetingType] = useState('date');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -28,6 +26,10 @@ export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
   const [endTimeOptions, setEndTimeOptions] = useState<
     { value: string; label: string }[]
   >([]);
+
+  const onClickButton = () => {
+    router.push('/teamleader?step=add');
+  };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMeetingType(event.target.value);
@@ -130,12 +132,12 @@ export default function CreateMeeting({ nextStep }: CreateMeetingProps) {
             <h3>보다 이전으로 선택할거예요</h3>
           </S.SelectWrapper>
         </S.Section>
-        <S.Section>
+        <S.Section style={{ marginBottom: '100px' }}>
           <h2>회의의 이름을 지어주세요</h2>
           <S.Input type="text" placeholder="선택" />
         </S.Section>
         <S.ButtonWrapper>
-          <S.Button onClick={nextStep} disabled={!isButtonEnabled}>
+          <S.Button onClick={onClickButton} disabled={!isButtonEnabled}>
             일정 페이지 생성하기
           </S.Button>
         </S.ButtonWrapper>

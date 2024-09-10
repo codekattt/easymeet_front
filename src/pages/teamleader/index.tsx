@@ -1,55 +1,45 @@
-import { useState } from 'react';
-import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import CreateMeeting from '../../components/units/teamLeader/CreateMeeting/createMeeting.index';
 import AdditionalSettings from '../../components/units/teamLeader/AdditionalSettings/additionalSettings.index';
 import Complete from '../../components/units/teamLeader/Complete/complete.index';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const SlideWrapper = styled.div<{ currentStep: number }>`
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  transform: ${({ currentStep }) => `translateX(-${currentStep * 100}%)`};
-  width: 300%;
-`;
+export default function TeamLeaderPage(): JSX.Element {
+  const router = useRouter();
+  const { step } = router.query;
 
-const SlideContainer = styled.div`
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-`;
-
-const SlideItem = styled.div`
-  width: 100%;
-  flex-shrink: 0;
-`;
-
-export default function TeamLeaderPage() {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const nextStep = () => {
-    if (currentStep < 2) {
-      setCurrentStep(currentStep + 1);
+  const renderStepComponent = () => {
+    switch (step) {
+      case 'create':
+        return <CreateMeeting />;
+      case 'add':
+        return <AdditionalSettings />;
+      case 'complete':
+        return <Complete />;
+      default:
+        return null; // 기본적으로 null 반환
     }
   };
 
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+  const goToStep = (nextStep: string) => {
+    router.push(`teamleader/?step=${nextStep}`, undefined, {
+      shallow: true,
+    });
   };
 
   return (
-    <SlideContainer>
-      <SlideWrapper currentStep={currentStep}>
-        <SlideItem>
-          <CreateMeeting nextStep={nextStep} />
-        </SlideItem>
-        <SlideItem>
-          <AdditionalSettings nextStep={nextStep} prevStep={prevStep} />
-        </SlideItem>
-        <SlideItem>
-          <Complete />
-        </SlideItem>
-      </SlideWrapper>
-    </SlideContainer>
+    <div style={{ width: '100%' }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step as string}
+          initial={{ opacity: 0, x: 100 }} // 초기 상태
+          animate={{ opacity: 1, x: 0 }} // 애니메이션 효과
+          exit={{ opacity: 0, x: -100 }} // 페이지 나갈 때 효과
+          transition={{ duration: 0.5 }} // 전환 시간
+        >
+          {renderStepComponent()}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }

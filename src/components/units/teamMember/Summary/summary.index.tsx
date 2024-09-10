@@ -25,7 +25,7 @@ export default function Summary() {
           </S.RowWrapper>
         </S.Section>
         <S.Section>
-          <TimeTable />
+          <TimeTable isReadOnly />
         </S.Section>
       </S.Container>
     </S.Wrapper>
