@@ -14,6 +14,13 @@ type Range = {
   cells: string[]; // 범위 내의 셀 키값 저장
 };
 
+type TimeTableProps = {
+  timesFromDB?: number[];
+  daysFromDB?: { date: string; day: string }[];
+  isReadOnly?: boolean;
+  onSelectionChange?: (isSelected: boolean) => void; // 선택 상태 변경 시 호출될 콜백
+};
+
 export default function TimeTable({
   timesFromDB = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
   daysFromDB = [
@@ -23,7 +30,8 @@ export default function TimeTable({
     { date: '10/4', day: '목' },
   ],
   isReadOnly = false,
-}) {
+  onSelectionChange,
+}: TimeTableProps) {
   const totalDays = 7;
   const timesForCells = timesFromDB.slice(0, -1);
 
@@ -125,6 +133,7 @@ export default function TimeTable({
       setSelectedRanges((prevRanges) =>
         prevRanges.filter((range) => range !== existingRange),
       );
+      onSelectionChange && onSelectionChange(selectedRanges.length > 1);
       return;
     }
 
@@ -148,6 +157,8 @@ export default function TimeTable({
       setSelectedRanges((prevRanges) => [...prevRanges, newRange]);
       setSelectedStart(null); // 범위 선택 후 초기화
       setSelectedEnd(null); // 끝 셀 초기화
+
+      onSelectionChange && onSelectionChange(true);
     } else {
       // 다른 열(rowIndex) 선택 시: 새로 선택 시작
       setSelectedStart(null);

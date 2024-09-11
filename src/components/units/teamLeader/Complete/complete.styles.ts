@@ -13,7 +13,7 @@ export const Container = styled.div`
   justify-content: start;
   width: 100%;
   max-width: 500px;
-  min-height: 680px;
+  min-height: 100vh;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   background-color: #f7f7f7;
@@ -92,6 +92,24 @@ export const ButtonWrapper = styled.div`
   max-width: 500px;
   background-color: #f7f7f7;
   padding: 20px;
+  z-index: 1000;
+
+  /* 버튼 위쪽에 그라데이션 추가 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(
+      to bottom,
+      rgba(247, 247, 247, 0) 0%,
+      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
+        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
+    );
+    z-index: -1;
+  }
 `;
 
 export const Button = styled.button`
@@ -115,5 +133,38 @@ export const Button = styled.button`
     background-color: #ccc;
     color: white;
     cursor: default;
+  }
+`;
+
+// 모달 디자인
+
+export const ModalContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+`;
+
+export const ModalTitle = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+export const ModalDescription = styled.p`
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+export const ModalButton = styled.button`
+  background-color: ${({ theme }) => theme.colors.point1};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.point2};
   }
 `;

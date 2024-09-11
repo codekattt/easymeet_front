@@ -72,6 +72,7 @@ export default function AdditionalSettings() {
             onChange={handleTimeChange}
             value={selectedTime} // 선택한 시간 상태
             isClearable // 선택을 지울 수 있도록 설정
+            isSearchable={false}
           />
         </S.Section>
         <S.Section>
@@ -83,6 +84,7 @@ export default function AdditionalSettings() {
             onChange={handleLocationChange}
             value={selectedLocation} // 선택한 장소 상태
             isClearable // 선택을 지울 수 있도록 설정
+            isSearchable={false}
           />
           {showInput && <S.Input type="text" placeholder={placeholder} />}
         </S.Section>

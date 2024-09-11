@@ -22,14 +22,7 @@ export const InnerWrapper = styled.div`
 `;
 
 export const InnerLogo = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.point1};
   cursor: pointer;
-
-  :hover {
-    color: ${({ theme }) => theme.colors.point2};
-  }
 
   & img {
     width: 162px;

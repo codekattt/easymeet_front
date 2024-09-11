@@ -9,11 +9,13 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   max-width: 500px;
+  min-height: 100vh;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
+  padding-bottom: 20px;
   background-color: #f7f7f7;
 
   & img {
@@ -119,7 +121,7 @@ export const SelectTimeStyles = {
     border: '2px solid #6773ef', // 경계선 설정
     borderTop: 'none',
     borderColor: '#2684ff',
-    zIndex: 2, // 다른 요소 위에 보이도록 설정
+    zIndex: 9999, // 다른 요소 위에 보이도록 설정
     scrollbarWidth: 'none',
   }),
 };
@@ -135,6 +137,24 @@ export const ButtonWrapper = styled.div`
   max-width: 500px;
   background-color: #f7f7f7;
   padding: 20px;
+  z-index: 1000;
+
+  /* 버튼 위쪽에 그라데이션 추가 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(
+      to bottom,
+      rgba(247, 247, 247, 0) 0%,
+      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
+        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
+    );
+    z-index: -1;
+  }
 `;
 
 export const Button = styled.button`

@@ -17,7 +17,7 @@ export default function TeamLeaderPage(): JSX.Element {
       case 'complete':
         return <Complete />;
       default:
-        return null; // 기본적으로 null 반환
+        return null;
     }
   };
 
@@ -32,10 +32,10 @@ export default function TeamLeaderPage(): JSX.Element {
       <AnimatePresence mode="wait">
         <motion.div
           key={step as string}
-          initial={{ opacity: 0, x: 100 }} // 초기 상태
-          animate={{ opacity: 1, x: 0 }} // 애니메이션 효과
-          exit={{ opacity: 0, x: -100 }} // 페이지 나갈 때 효과
-          transition={{ duration: 0.5 }} // 전환 시간
+          initial={{ opacity: 0, x: 0 }} // 초기 상태 수정: x 축 이동 없음
+          animate={{ opacity: 1, x: 0 }} // 애니메이션 효과: x 축 이동 없음
+          exit={{ opacity: 0, x: 0 }} // 페이지 나갈 때 효과: x 축 이동 없음
+          transition={{ duration: 0.1 }} // 전환 시간
         >
           {renderStepComponent()}
         </motion.div>

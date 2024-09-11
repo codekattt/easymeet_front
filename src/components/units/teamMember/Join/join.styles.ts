@@ -4,21 +4,20 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   max-width: 500px;
+  min-height: 100vh;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   background-color: #f7f7f7;
 
   & img {
-    max-width: 100%;
     height: auto;
     align-self: center;
     margin-bottom: 7px;
@@ -63,25 +62,17 @@ export const Section = styled.section`
   }
 `;
 
-export const TextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 14px 0 0 12px;
-`;
-
-export const Text = styled.h3`
-  font-size: 25px !important;
-  font-weight: 400 !important;
-  margin: 0 !important;
+export const InnerText = styled.h4`
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 13px 0 0 12px;
   padding-bottom: 8px;
   color: ${({ theme }) => theme.colors.point2};
-`;
 
-export const TextBold = styled.h3`
-  font-size: 25px !important;
-  font-weight: 700 !important;
-  padding-bottom: 8px;
-  color: ${({ theme }) => theme.colors.point2};
+  & span {
+    font-weight: 700;
+  }
 `;
 
 export const Input = styled.input`
@@ -90,24 +81,51 @@ export const Input = styled.input`
   padding: 10px 15px;
   border: 1px solid #6773ef;
   border-radius: 10px;
-  margin-bottom: 26px;
+  margin-bottom: 10px;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f7f7;
+  padding: 20px;
+  z-index: 1000;
+
+  /* 버튼 위쪽에 그라데이션 추가 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(
+      to bottom,
+      rgba(247, 247, 247, 0) 0%,
+      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
+        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
+    );
+    z-index: -1;
+  }
 `;
 
 export const SubButton = styled.span`
   font-size: 18px;
   color: ${({ theme }) => theme.colors.point1};
-  margin-top: 170px;
+  margin-bottom: 30px;
   text-align: center;
   cursor: pointer;
 
   &:hover {
     color: ${({ theme }) => theme.colors.point2};
   }
-`;
-
-export const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 export const Button = styled.button`
@@ -119,7 +137,6 @@ export const Button = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

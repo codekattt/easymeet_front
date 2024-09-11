@@ -4,15 +4,15 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   max-width: 500px;
+  min-height: 100vh;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
   background-color: #f7f7f7;
@@ -34,50 +34,27 @@ export const Container = styled.div`
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: white;
-
-    & span {
-      color: #d92525;
-      margin-left: 4px;
-    }
   }
 
   & h3 {
     font-size: 16px;
     font-weight: 400;
-    color: white;
+    margin-bottom: 4px;
 
     & span {
-      color: orange;
+      color: ${({ theme }) => theme.colors.point1};
       font-weight: 700;
     }
   }
-`;
-
-export const H2 = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: ${({ theme }) => theme.colors.fontMain}!important;
-`;
-
-export const H3 = styled.h3`
-  font-size: 16px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.subFont1}!important;
-  margin-bottom: 20px;
 `;
 
 export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  border: 2px solid;
-  border-color: ${({ theme }) => theme.colors.point1};
-  padding-top: 25px;
-  padding-left: 15px;
-  padding-bottom: 26px;
-  background-color: ${({ theme }) => theme.colors.point2};
+  border: none;
+  padding: 25px 15px 22px 15px;
+  background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
   margin: 0 0 12px 0;
 `;
@@ -85,6 +62,32 @@ export const Section = styled.section`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f7f7;
+  padding: 20px;
+  z-index: 1000;
+
+  /* 버튼 위쪽에 그라데이션 추가 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(
+      to bottom,
+      rgba(247, 247, 247, 0) 0%,
+      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
+        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
+    );
+    z-index: -1;
+  }
 `;
 
 export const Button = styled.button`
@@ -96,7 +99,6 @@ export const Button = styled.button`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  margin-top: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

@@ -119,6 +119,7 @@ export default function CreateMeeting() {
               styles={S.SelectTimeStyles}
               onChange={(option) => setSelectedStartTime(option)}
               value={selectedStartTime}
+              isSearchable={false}
             />
             <h3>보다 이후,</h3>
           </S.SelectWrapper>
@@ -128,6 +129,7 @@ export default function CreateMeeting() {
               styles={S.SelectTimeStyles}
               onChange={(option) => setSelectedEndTime(option)}
               value={selectedEndTime}
+              isSearchable={false}
             />
             <h3>보다 이전으로 선택할거예요</h3>
           </S.SelectWrapper>
