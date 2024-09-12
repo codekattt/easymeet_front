@@ -1,43 +1,143 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TimeTable from '../../../commons/timeTable/timeTable.index';
 import * as S from './selectTime.styles';
+import { doc, getDoc, updateDoc, collection, setDoc } from 'firebase/firestore';
+import { db } from '../../../../commons/libraries/firebase';
 
 export default function SelectTime() {
   const router = useRouter();
+  const { meetingId, name } = router.query; // URL에서 team member 이름을 받아옴
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  const onClickButton = () => {
-    router.push('/teammember?step=summary');
+  const [timesFromDB, setTimesFromDB] = useState<number[]>([]);
+  const [daysFromDB, setDaysFromDB] = useState<{ date: string; day: string }[]>(
+    [],
+  );
+  const [selectedCells, setSelectedCells] = useState<string[]>([]);
+
+  const [duration, setDuration] = useState<string | null>(null);
+  const [location, setLocation] = useState<string | null>(null);
+
+  // TimeTable 컴포넌트에서 선택된 셀 데이터 받아서 저장
+  const handleSelectionChange = (cells: string[]) => {
+    setSelectedCells(cells);
+    setIsButtonEnabled(cells.length > 0);
   };
 
-  const handleSelectionChange = (isSelected: boolean) => {
-    setIsButtonEnabled(isSelected); // 선택 상태에 따라 버튼 활성화
+  // Firebase에서 meetingId로 문서 데이터 가져오기
+  useEffect(() => {
+    const fetchMeetingData = async () => {
+      if (meetingId) {
+        const docRef = doc(db, 'meetings', meetingId as string);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const meetingData = docSnap.data();
+          const {
+            dates,
+            startTime,
+            endTime,
+            duration,
+            location,
+            customLocation,
+          } = meetingData;
+
+          // 날짜를 daysFromDB 형식으로 변환
+          const parsedDays = dates.map((date: string) => ({
+            date: new Date(date).toLocaleDateString('ko-KR', {
+              month: '2-digit',
+              day: '2-digit',
+            }),
+            day: new Date(date).toLocaleDateString('ko-KR', {
+              weekday: 'short',
+            }),
+          }));
+
+          // 시간 범위 생성 (시작 시간 ~ 종료 시간)
+          const parsedTimes = generateTimeRange(startTime, endTime);
+
+          // 회의 정보 설정
+          setDuration(duration || null);
+          setLocation(customLocation || location || null);
+
+          setTimesFromDB(parsedTimes);
+          setDaysFromDB(parsedDays);
+        } else {
+          console.log('No such document!');
+        }
+      }
+    };
+
+    fetchMeetingData();
+  }, [meetingId]);
+
+  // 시간 범위를 생성하는 함수 (startTime ~ endTime)
+  const generateTimeRange = (startTime: string, endTime: string): number[] => {
+    const startHour = parseInt(startTime.split(':')[0], 10);
+    const endHour = parseInt(endTime.split(':')[0], 10);
+
+    const times = [];
+    for (let i = startHour; i <= endHour; i++) {
+      times.push(i);
+    }
+    return times;
   };
+
+  // 선택된 시간을 teamMembers 컬렉션에 저장하는 함수
+  const onClickButton = async () => {
+    if (meetingId && selectedCells.length > 0 && name) {
+      const teamMemberDocRef = doc(
+        collection(db, 'meetings', meetingId as string, 'teamMembers'),
+        name as string,
+      );
+      try {
+        await setDoc(teamMemberDocRef, { selectedTimes: selectedCells });
+        router.push(`/teammember?step=summary&meetingId=${meetingId}`);
+      } catch (error) {
+        console.error('Error saving selected times:', error);
+      }
+    }
+  };
+
+  const isMeetingInfoEmpty = !duration && !location;
 
   return (
     <S.Wrapper>
       <S.Container>
-        <S.Section>
-          <h2>회의정보</h2>
-          <h3>
-            <span>2시간 30분</span> 동안
-          </h3>
-          <h3>
-            <span>연세대 경영관</span>에서 진행됩니다.
-          </h3>
-        </S.Section>
-        <img
-          src="/images/icon/downOutlined.png"
-          alt="아래 화살표"
-          style={{ marginBottom: '12px' }}
-        />
+        {!isMeetingInfoEmpty && (
+          <>
+            <S.Section>
+              <h2>회의정보</h2>
+              {duration && (
+                <h3>
+                  <span>{duration}</span> 동안
+                </h3>
+              )}
+              {location && (
+                <h3>
+                  <span>{location}</span>에서
+                </h3>
+              )}
+              <h3>진행됩니다.</h3>
+            </S.Section>
+            <img
+              src="/images/icon/downOutlined.png"
+              alt="downArrow"
+              style={{ marginBottom: '12px' }}
+            />
+          </>
+        )}
         <S.Section style={{ marginBottom: '120px' }}>
           <h2>회의 가능한 시간을 알려주세요</h2>
           <h3 style={{ marginBottom: '20px' }}>
             가능한 시작 시간과, 끝 시간을 클릭!
           </h3>
-          <TimeTable onSelectionChange={handleSelectionChange} />
+          <TimeTable
+            timesFromDB={timesFromDB}
+            daysFromDB={daysFromDB}
+            onSelectionChange={handleSelectionChange}
+          />
         </S.Section>
 
         <S.ButtonWrapper>

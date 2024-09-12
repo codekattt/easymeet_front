@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
-import Select from 'react-select';
-import * as S from './additionalSettings.styles';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import * as S from './additionalSettings.styles';
+import Select, { SingleValue } from 'react-select';
+
+import { db } from '../../../../commons/libraries/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 export default function AdditionalSettings() {
   const router = useRouter();
+  const { meetingId } = router.query; // router.query에서 meetingId를 가져옴
 
   const timeOptions = [
     { value: '30분', label: '30분' },
@@ -21,16 +25,19 @@ export default function AdditionalSettings() {
     { value: '미지정', label: '미지정' },
   ];
 
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedTime, setSelectedTime] =
+    useState<SingleValue<{ value: string; label: string }>>(null);
+  const [selectedLocation, setSelectedLocation] =
+    useState<SingleValue<{ value: string; label: string }>>(null);
+  const [customLocation, setCustomLocation] = useState('');
   const [placeholder, setPlaceholder] = useState(
     '구체적인 장소를 작성해주세요(선택)',
   );
   const [showInput, setShowInput] = useState(true);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  const handleLocationChange = (selectedOption: any) => {
-    setSelectedLocation(selectedOption); // 선택한 장소 업데이트
+  const onChangeLocation = (selectedOption: any) => {
+    setSelectedLocation(selectedOption);
     if (selectedOption?.value === '온라인') {
       setPlaceholder('온라인 화상회의 툴을 작성해주세요');
       setShowInput(true);
@@ -42,21 +49,44 @@ export default function AdditionalSettings() {
     }
   };
 
-  const handleTimeChange = (selectedOption: any) => {
-    setSelectedTime(selectedOption); // 선택한 시간 업데이트
+  const onChangeTime = (selectedOption: any) => {
+    setSelectedTime(selectedOption);
   };
 
-  // 선택한 값이 있을 때 버튼 활성화
   useEffect(() => {
-    if (selectedTime || selectedLocation) {
+    if (selectedTime || selectedLocation || customLocation) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  }, [selectedTime, selectedLocation]);
+  }, [selectedTime, selectedLocation, customLocation]);
 
-  const onClickButton = () => {
-    router.push('/teamleader?step=complete');
+  const handleCustomLocationChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setCustomLocation(e.target.value);
+  };
+
+  // 추가 설정 정보를 Firebase에 저장
+  const saveAddDataToFB = async () => {
+    const additionalData = {
+      duration: selectedTime?.value || null,
+      location: selectedLocation?.value || null,
+      customLocation: customLocation || null,
+    };
+
+    try {
+      const meetingRef = doc(db, 'meetings', meetingId as string);
+      await updateDoc(meetingRef, additionalData);
+      router.push(`/teamleader?step=complete&meetingId=${meetingId}`);
+    } catch (error) {
+      console.error('Error updating meeting: ', error);
+    }
+  };
+
+  // 건너뛰기 버튼 클릭 시 바로 다음 단계로 이동
+  const onClickPass = () => {
+    router.push(`/teamleader?step=complete&meetingId=${meetingId}`);
   };
 
   return (
@@ -69,9 +99,9 @@ export default function AdditionalSettings() {
             placeholder={'시간 선택'}
             options={timeOptions}
             styles={S.SelectTimeStyles}
-            onChange={handleTimeChange}
-            value={selectedTime} // 선택한 시간 상태
-            isClearable // 선택을 지울 수 있도록 설정
+            onChange={onChangeTime}
+            value={selectedTime}
+            isClearable
             isSearchable={false}
           />
         </S.Section>
@@ -81,19 +111,23 @@ export default function AdditionalSettings() {
             placeholder={'장소 선택'}
             options={locationOptions}
             styles={S.SelectTimeStyles}
-            onChange={handleLocationChange}
-            value={selectedLocation} // 선택한 장소 상태
-            isClearable // 선택을 지울 수 있도록 설정
+            onChange={onChangeLocation}
+            value={selectedLocation}
+            isClearable
             isSearchable={false}
           />
-          {showInput && <S.Input type="text" placeholder={placeholder} />}
+          {showInput && (
+            <S.Input
+              type="text"
+              placeholder={placeholder}
+              value={customLocation}
+              onChange={handleCustomLocationChange}
+            />
+          )}
         </S.Section>
         <S.ButtonWrapper>
-          <S.PassButton onClick={onClickButton}>건너뛰기 ＞</S.PassButton>
-          <S.Button
-            onClick={onClickButton}
-            disabled={!isButtonEnabled} // 버튼 비활성화 여부 설정
-          >
+          <S.PassButton onClick={onClickPass}>건너뛰기 ＞</S.PassButton>
+          <S.Button onClick={saveAddDataToFB} disabled={!isButtonEnabled}>
             추가 설정 입력
           </S.Button>
         </S.ButtonWrapper>

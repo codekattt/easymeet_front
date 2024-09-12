@@ -1,13 +1,17 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import * as S from './createMeeting.styles';
 import DatePicker from '../../../commons/datePicker/datePicker.index';
 import Select, { SingleValue } from 'react-select';
-import { useRouter } from 'next/router';
+
+import { db } from '../../../../commons/libraries/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function CreateMeeting() {
   const router = useRouter();
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [meetingType, setMeetingType] = useState('date');
+  const [meetingName, setMeetingName] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   const [selectedStartTime, setSelectedStartTime] = useState<
@@ -27,11 +31,11 @@ export default function CreateMeeting() {
     { value: string; label: string }[]
   >([]);
 
-  const onClickButton = () => {
-    router.push('/teamleader?step=add');
+  const onChangeMeetingName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMeetingName(event.target.value);
   };
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMeetingType(event.target.value);
   };
 
@@ -71,6 +75,41 @@ export default function CreateMeeting() {
     }
   }, [meetingType, selectedDates, selectedStartTime, selectedEndTime]);
 
+  const saveDataToFB = async () => {
+    const formattedDates =
+      meetingType === 'date'
+        ? selectedDates
+            .sort((a, b) => a.getTime() - b.getTime()) // 날짜순으로 정렬
+            .map((date) => {
+              const year = date.getFullYear();
+              const month = (date.getMonth() + 1).toString().padStart(2, '0');
+              const day = date.getDate().toString().padStart(2, '0');
+              return `${year}-${month}-${day}`;
+            })
+        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    const meetingData = {
+      type: meetingType,
+      dates: formattedDates,
+      startTime: selectedStartTime?.value || '09:00',
+      endTime: selectedEndTime?.value || '24:00',
+      meetingName: meetingName || '',
+    };
+
+    try {
+      const docRef = await addDoc(collection(db, 'meetings'), meetingData);
+      const meetingId = docRef.id;
+      router.push(`/teamleader?step=add&meetingId=${meetingId}`);
+    } catch (error) {
+      console.error('Error saving meeting: ', error);
+    }
+  };
+
+  const onClickButton = () => {
+    saveDataToFB();
+    router.push('/teamleader?step=add');
+  };
+
   return (
     <S.Wrapper>
       <S.Container>
@@ -86,7 +125,7 @@ export default function CreateMeeting() {
               name="meeting-type"
               value="date"
               checked={meetingType === 'date'}
-              onChange={handleRadioChange}
+              onChange={onChangeRadio}
             />
             <S.Label htmlFor="date">날짜 지정 - 기본</S.Label>
           </div>
@@ -97,7 +136,7 @@ export default function CreateMeeting() {
               name="meeting-type"
               value="weekday"
               checked={meetingType === 'weekday'}
-              onChange={handleRadioChange}
+              onChange={onChangeRadio}
             />
             <S.Label htmlFor="weekday">요일 지정 - 정기회의용</S.Label>
           </div>
@@ -136,7 +175,12 @@ export default function CreateMeeting() {
         </S.Section>
         <S.Section style={{ marginBottom: '100px' }}>
           <h2>회의의 이름을 지어주세요</h2>
-          <S.Input type="text" placeholder="선택" />
+          <S.Input
+            type="text"
+            placeholder="선택"
+            value={meetingName}
+            onChange={onChangeMeetingName}
+          />
         </S.Section>
         <S.ButtonWrapper>
           <S.Button onClick={onClickButton} disabled={!isButtonEnabled}>

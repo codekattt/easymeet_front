@@ -62,6 +62,8 @@ export const Cell = styled.div<{
   isSelected: boolean;
   isStart: boolean;
   isEnd: boolean;
+  isSummary: boolean; // summary 페이지 여부 추가
+  backgroundColor: string; // 배경 색상 추가
 }>`
   border-right: 1px solid ${({ theme }) => theme.colors.point2};
   border-bottom: 1px solid ${({ theme }) => theme.colors.point2};
@@ -69,20 +71,20 @@ export const Cell = styled.div<{
   width: 100%;
   min-height: 1.6rem;
   text-align: center;
-  background-color: ${({ isSelected, theme }) =>
-    isSelected ? theme.colors.point1 : 'white'};
+  background-color: ${({ isSelected, backgroundColor, isSummary, theme }) =>
+    isSummary ? backgroundColor : isSelected ? theme.colors.point1 : 'white'};
 
   /* 시작 셀과 끝 셀 스타일 적용 */
   ${({ isStart, theme }) =>
     isStart &&
     `
-    background-color: ${theme.colors.point3};
+    border: 2px solid ${theme.colors.point3};
   `}
 
   ${({ isEnd, theme }) =>
     isEnd &&
     `
-    background-color: ${theme.colors.point3};
+    border: 2px solid ${theme.colors.point3};
   `}
 
   /* 30분 구분선 */

@@ -5,10 +5,16 @@ import * as S from './complete.styles';
 
 export default function Complete() {
   const router = useRouter();
+  const { meetingId } = router.query; // URL에서 meetingId를 가져옴
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  // 팀원용 링크 생성
+  const generateTeamMemberLink = () => {
+    return `${window.location.origin}/teammember?step=join&meetingId=${meetingId}`;
+  };
+
   const onClickCopyLink = async () => {
-    const link = window.location.href;
+    const link = generateTeamMemberLink();
     try {
       await navigator.clipboard.writeText(link);
       setIsModalVisible(true); // 모달 표시
@@ -22,7 +28,8 @@ export default function Complete() {
   };
 
   const onClickButton = () => {
-    router.push('/teammember?step=join');
+    // 팀원이 가능 시간을 입력하는 페이지로 이동
+    router.push(`/teammember?step=join&meetingId=${meetingId}`);
   };
 
   const onClickCheckMyTime = () => {};
