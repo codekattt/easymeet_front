@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import TimeTable from '../../../commons/timeTable/timeTable.index';
 import * as S from './selectTime.styles';
-import { doc, getDoc, updateDoc, collection, setDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, setDoc } from 'firebase/firestore';
 import { db } from '../../../../commons/libraries/firebase';
 
 export default function SelectTime() {

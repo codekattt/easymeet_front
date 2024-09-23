@@ -74,6 +74,11 @@ export const Cell = styled.div<{
   background-color: ${({ isSelected, backgroundColor, isSummary, theme }) =>
     isSummary ? backgroundColor : isSelected ? theme.colors.point1 : 'white'};
 
+  /* 5번 중복 선택된 셀에 노란색 테두리 */
+  &.five-times-selected {
+    border: 2px solid yellow;
+  }
+
   /* 시작 셀과 끝 셀 스타일 적용 */
   ${({ isStart, theme }) =>
     isStart &&
@@ -88,12 +93,12 @@ export const Cell = styled.div<{
   `}
 
   /* 30분 구분선 */
-  &:nth-child(odd) {
+  &:nth-of-type(odd) {
     border-bottom: 1px dashed ${({ theme }) => theme.colors.point2};
   }
 
   /* border-bottom 안겹치도록 */
-  &:last-child {
+  &:last-of-type {
     border-bottom: none;
   }
 

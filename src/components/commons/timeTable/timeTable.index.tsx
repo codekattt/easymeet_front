@@ -1,5 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import * as S from './timeTable.styles';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 type CellPosition = {
   rowIndex: number;
@@ -20,6 +22,7 @@ type TimeTableProps = {
   isReadOnly?: boolean;
   selectedCells?: string[];
   selectedCounts?: { [key: string]: number };
+  selectedBy?: { [key: string]: string[] };
   onSelectionChange?: (selectedCells: string[]) => void;
 };
 
@@ -29,6 +32,7 @@ export default function TimeTable({
   isReadOnly = false,
   selectedCells = [],
   selectedCounts = {},
+  selectedBy = {},
   onSelectionChange,
 }: TimeTableProps) {
   const totalDays = 7;
@@ -72,8 +76,10 @@ export default function TimeTable({
   const colorMap: { [key: number]: string } = {
     0: 'white',
     1: '#6773EF',
-    2: '#4652D1',
-    3: '#3D439E',
+    2: '#5A62E7',
+    3: '#4A53D6',
+    4: '#3D439E',
+    5: '#3D439E',
   };
 
   const getBackgroundColor = (
@@ -81,7 +87,15 @@ export default function TimeTable({
     selectedCounts: { [key: string]: number },
   ): string => {
     const count = selectedCounts[key] || 0;
-    return colorMap[count] || colorMap[3]; // 최대값 3 이상은 동일 색상
+    return colorMap[count] || colorMap[5]; // 최대값 5 이상은 동일 색상
+  };
+
+  const getCellClassName = (
+    key: string,
+    selectedCounts: { [key: string]: number },
+  ): string => {
+    const count = selectedCounts[key] || 0;
+    return count === 5 ? 'five-times-selected' : ''; // 5번 선택 시 클래스 추가
   };
 
   // 시간선택에 따른 고유 키캆 부여
@@ -274,19 +288,37 @@ export default function TimeTable({
                               key,
                               selectedCounts,
                             );
+                            const selectedByText =
+                              selectedBy[key]?.join(', ') || '선택자 없음'; // 선택자 정보
+
                             return (
-                              <S.Cell
-                                isSummary={isReadOnly} // summary 페이지 여부 전달
-                                backgroundColor={backgroundColor} // 배경 색상 전달
+                              <Tippy
+                                content={selectedByText}
                                 key={key}
-                                isSelected={isSelected(key)}
-                                isStart={isStart(key)}
-                                isEnd={isEnd(key)}
-                                onClick={() =>
-                                  !isReadOnly &&
-                                  handleCellClick(rowIndex, cellIndex, subIndex)
-                                }
-                              />
+                                theme="custom"
+                                maxWidth="200px"
+                              >
+                                <S.Cell
+                                  isSummary={isReadOnly}
+                                  backgroundColor={backgroundColor}
+                                  className={getCellClassName(
+                                    key,
+                                    selectedCounts,
+                                  )}
+                                  key={key}
+                                  isSelected={isSelected(key)}
+                                  isStart={isStart(key)}
+                                  isEnd={isEnd(key)}
+                                  onClick={() =>
+                                    !isReadOnly &&
+                                    handleCellClick(
+                                      rowIndex,
+                                      cellIndex,
+                                      subIndex,
+                                    )
+                                  }
+                                />
+                              </Tippy>
                             );
                           })}
                       </Fragment>
