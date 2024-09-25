@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>easymeet-cuthen</title>
+        <title>Easy Meet | 이지밋</title>
       </Head>
     </>
   );

@@ -25,48 +25,35 @@ export function getBestMeetingTime(
     const current = sortedTimes[i];
     const next = sortedTimes[i + 1];
 
-    // "MM. DD.HHmm" 형식을 고려하여 파싱
-    const [currentMonth, currentDay, currentTime] =
-      current.timeKey.split(/\. |\./);
-    const [nextMonth, nextDay, nextTime] = next.timeKey.split(/\. |\./);
+    // "MMDDHHmm" 형식으로 파싱
+    const currentMonth = current.timeKey.slice(0, 2); // "09"
+    const currentDay = current.timeKey.slice(2, 4); // "23"
+    const currentHour = parseInt(current.timeKey.slice(4, 6), 10); // "10"
+    const currentMin = parseInt(current.timeKey.slice(6, 8), 10); // "00"
 
-    if (
-      !currentMonth ||
-      !currentDay ||
-      !currentTime ||
-      !nextMonth ||
-      !nextDay ||
-      !nextTime
-    ) {
-      console.error(
-        `잘못된 timeKey 형식: ${current.timeKey} 또는 ${next.timeKey}`,
-      );
-      continue;
-    }
+    const nextMonth = next.timeKey.slice(0, 2); // "09"
+    const nextDay = next.timeKey.slice(2, 4); // "23"
+    const nextHour = parseInt(next.timeKey.slice(4, 6), 10); // "10"
+    const nextMin = parseInt(next.timeKey.slice(6, 8), 10); // "30"
 
     const isSameDay = currentMonth === nextMonth && currentDay === nextDay;
-    const currentHourNum = parseInt(currentTime.slice(0, 2), 10);
-    const nextHourNum = parseInt(nextTime.slice(0, 2), 10);
-    const currentMinNum = parseInt(currentTime.slice(2, 4), 10);
-    const nextMinNum = parseInt(nextTime.slice(2, 4), 10);
 
-    if (
-      isSameDay &&
-      // 다음 시간대가 현재 시간대의 30분 후인지 확인
-      ((nextHourNum === currentHourNum && nextMinNum === currentMinNum + 30) ||
-        (currentMinNum === 30 &&
-          nextHourNum === currentHourNum + 1 &&
-          nextMinNum === 0))
-    ) {
-      current.isContiguous = true;
-      next.isContiguous = true;
+    if (isSameDay) {
+      // 현재 시간대의 30분 후인지 확인
+      if (
+        (nextHour === currentHour && nextMin === currentMin + 30) ||
+        (currentMin === 30 && nextHour === currentHour + 1 && nextMin === 0)
+      ) {
+        current.isContiguous = true;
+        next.isContiguous = true;
+      }
     }
   }
 
   // 3. 연속된 시간대 고려하여 최적 시간 찾기
   const bestTimeSlot = sortedTimes.find((slot, index) => {
     if (!duration) return true; // duration이 없으면 첫 번째 후보 반환
-    // duration이 있는 경우 연속된 시간이 있는지 확인
+
     const SLOT_DURATION = 0.5; // 반시간 단위
     const requiredSlots = Math.ceil(duration / SLOT_DURATION); // 필요한 슬롯 수 계산
 
@@ -88,14 +75,10 @@ export function getBestMeetingTime(
   if (!bestTimeSlot) return null;
 
   // 4. 최종 선택된 시간대의 날짜 및 시간 반환
-  const [bestMonth, bestDay, bestTime] = bestTimeSlot.timeKey.split(/\. |\./);
-  if (!bestMonth || !bestDay || !bestTime) {
-    console.error(`잘못된 timeKey 형식: ${bestTimeSlot.timeKey}`);
-    return null;
-  }
-
-  const bestHour = bestTime.slice(0, 2);
-  const bestMin = bestTime.slice(2, 4);
+  const bestMonth = bestTimeSlot.timeKey.slice(0, 2); // "09"
+  const bestDay = bestTimeSlot.timeKey.slice(2, 4); // "23"
+  const bestHour = bestTimeSlot.timeKey.slice(4, 6); // "10"
+  const bestMin = bestTimeSlot.timeKey.slice(6, 8); // "00"
 
   const bestDayObj = daysForBestTime.find(
     (day) => day.date === `${bestMonth}${bestDay}`, // "MMDD"와 일치

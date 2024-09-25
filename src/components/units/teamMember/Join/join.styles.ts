@@ -84,6 +84,11 @@ export const Input = styled.input`
   margin-bottom: 10px;
 `;
 
+export const ErrorMessage = styled.h5`
+  font: 10px;
+  color: green;
+`;
+
 export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;

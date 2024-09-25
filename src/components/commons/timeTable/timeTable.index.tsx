@@ -14,6 +14,7 @@ type Range = {
   start: CellPosition;
   end: CellPosition;
   cells: string[];
+  isExisting: boolean; // 기존 범위 여부
 };
 
 type TimeTableProps = {
@@ -39,38 +40,134 @@ export default function TimeTable({
   const timesForCells = timesFromDB.slice(0, -1);
 
   const [selectedStart, setSelectedStart] = useState<CellPosition | null>(null);
-  const [selectedEnd, setSelectedEnd] = useState<CellPosition | null>(null);
   const [selectedRanges, setSelectedRanges] = useState<Range[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // DB에서 팀원 시간 선택 데이터 받아오기
+  // Function to generate the next cell position
+  const getNextCell = (current: CellPosition): CellPosition | null => {
+    const { rowIndex, cellIndex, subIndex } = current;
+    let nextSubIndex = subIndex + 1;
+    let nextCellIndex = cellIndex;
+    let nextRowIndex = rowIndex;
+
+    if (nextSubIndex > 1) {
+      // subIndex can be 0 or 1
+      nextSubIndex = 0;
+      nextCellIndex += 1;
+      if (nextCellIndex >= timesFromDB.length) {
+        nextCellIndex = 0;
+        nextRowIndex += 1;
+        if (nextRowIndex >= daysFromDB.length) {
+          return null; // No more cells
+        }
+      }
+    }
+
+    const nextKey = generateCellKey(nextRowIndex, nextCellIndex, nextSubIndex);
+    return {
+      rowIndex: nextRowIndex,
+      cellIndex: nextCellIndex,
+      subIndex: nextSubIndex,
+      key: nextKey,
+    };
+  };
+
+  // Function to generate cell key
+  const generateCellKey = (
+    rowIndex: number,
+    cellIndex: number,
+    subIndex: number,
+  ): string => {
+    // 해당 날짜 및 시간 가져오기
+    const dayString = daysFromDB[rowIndex]?.date.replace(/\D/g, ''); // "0926"
+    const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
+      timesFromDB[cellIndex]
+    }`; // "12"
+
+    // 분 값 생성
+    const subString = subIndex === 0 ? '00' : '30';
+
+    // "MMDDHHmm" 형식의 키 생성
+    return `${dayString}${timeString}${subString}`;
+  };
+
+  // DB에서 팀원 시간 선택 데이터 받아오기 (읽기 전용 및 수정 모드)
   useEffect(() => {
-    if (isReadOnly && selectedCells) {
-      const selectedRangesFromProps = selectedCells
-        .map((cellKey) => {
-          const [dayString, timeString, subString] = [
-            cellKey.slice(0, 4),
-            cellKey.slice(4, 6),
-            cellKey.slice(6),
-          ];
+    if (selectedCells && selectedCells.length > 0 && !isInitialized) {
+      // 1. Sort selectedCells in chronological order
+      const sortedSelectedCells = [...selectedCells].sort((a, b) =>
+        a.localeCompare(b),
+      );
 
-          const rowIndex = parseInt(dayString.slice(2)) - 1;
-          const cellIndex = timesFromDB.indexOf(parseInt(timeString, 10));
-          const subIndex = subString === '00' ? 0 : 1;
+      // 2. Group consecutive cells into ranges
+      const newRanges: Range[] = [];
+      let currentRange: Range | null = null;
 
-          if (rowIndex >= 0 && cellIndex >= 0) {
-            return {
-              start: { rowIndex, cellIndex, subIndex, key: cellKey },
-              end: { rowIndex, cellIndex, subIndex, key: cellKey },
+      sortedSelectedCells.forEach((cellKey) => {
+        const [dayString, timeString, subString] = [
+          cellKey.slice(0, 4), // "0926"
+          cellKey.slice(4, 6), // "12"
+          cellKey.slice(6), // "00"
+        ];
+
+        const rowIndex = daysFromDB.findIndex(
+          (day) => day.date.replace(/\D/g, '') === dayString,
+        );
+        const cellIndex = timesFromDB.indexOf(parseInt(timeString, 10));
+        const subIndex = subString === '00' ? 0 : 1;
+
+        if (rowIndex < 0 || cellIndex < 0) {
+          // Invalid cell, skip
+          return;
+        }
+
+        const cellPosition: CellPosition = {
+          rowIndex,
+          cellIndex,
+          subIndex,
+          key: cellKey,
+        };
+
+        if (!currentRange) {
+          // Start a new range
+          currentRange = {
+            start: cellPosition,
+            end: cellPosition,
+            cells: [cellKey],
+            isExisting: true,
+          };
+        } else {
+          // Check if the current cell is consecutive to the last cell in the current range
+          const lastCell = currentRange.end;
+          const expectedNext = getNextCell(lastCell);
+
+          if (expectedNext && expectedNext.key === cellKey) {
+            // Consecutive cell, extend the current range
+            currentRange.end = cellPosition;
+            currentRange.cells.push(cellKey);
+          } else {
+            // Not consecutive, push the current range and start a new one
+            newRanges.push(currentRange);
+            currentRange = {
+              start: cellPosition,
+              end: cellPosition,
               cells: [cellKey],
+              isExisting: true,
             };
           }
-          return null; // 값이 유효하지 않은 경우 null 반환
-        })
-        .filter(Boolean); // null 값을 필터링
+        }
+      });
 
-      setSelectedRanges(selectedRangesFromProps as Range[]); // 필터링된 배열을 설정
+      // Push the last range
+      if (currentRange) {
+        newRanges.push(currentRange);
+      }
+
+      setSelectedRanges(newRanges);
+      console.log('Initialized selectedRanges:', newRanges); // 디버깅 로그
+      setIsInitialized(true);
     }
-  }, [selectedCells, timesFromDB, isReadOnly]);
+  }, [selectedCells, timesFromDB, daysFromDB, isInitialized]);
 
   // 팀원 중복 선택된 횟수에 따라 색상 변경
   const colorMap: { [key: number]: string } = {
@@ -98,26 +195,7 @@ export default function TimeTable({
     return count === 5 ? 'five-times-selected' : ''; // 5번 선택 시 클래스 추가
   };
 
-  // 시간선택에 따른 고유 키캆 부여
-  const generateCellKey = (
-    rowIndex: number,
-    cellIndex: number,
-    subIndex: number,
-  ): string => {
-    // DB에서 해당 날짜 및 시간 가져오기
-    const dayString = daysFromDB[rowIndex]?.date.replace('/', ''); // 날짜 값에서 슬래시 제거
-    const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
-      timesFromDB[cellIndex]
-    }`;
-
-    // 분 값 생성
-    const subString = subIndex === 0 ? '00' : '30';
-
-    // 최종적으로 "날짜 + 시간 + 분" 형태의 문자열 생성
-    return `${dayString}${timeString}${subString}`;
-  };
-
-  // 범위에서 선택된 모든 셀을 저장하는 함수
+  // 범위 내 모든 셀을 저장하는 함수
   const generateRangeCells = (
     start: CellPosition,
     end: CellPosition,
@@ -180,19 +258,20 @@ export default function TimeTable({
 
     const existingRange = findRangeContainingCell(key);
 
-    // 이미 선택된 범위가 클릭되면 해당 범위 삭제
+    // 이미 선택된 범위가 클릭되면 해당 범위 전체 삭제
     if (existingRange) {
-      setSelectedRanges((prevRanges) =>
-        prevRanges.filter((range) => range !== existingRange),
-      );
-
-      // 선택 취소된 셀들을 부모 컴포넌트로 전달
-      if (onSelectionChange) {
-        const remainingCells = selectedRanges
-          .filter((range) => range !== existingRange)
-          .flatMap((range) => range.cells);
-        onSelectionChange(remainingCells);
-      }
+      setSelectedRanges((prevRanges) => {
+        const updatedRanges = prevRanges.filter(
+          (range) => range !== existingRange,
+        );
+        console.log('Removed range:', existingRange); // 디버깅 로그
+        console.log('Updated ranges:', updatedRanges); // 디버깅 로그
+        if (onSelectionChange) {
+          const remainingCells = updatedRanges.flatMap((range) => range.cells);
+          onSelectionChange(remainingCells);
+        }
+        return updatedRanges;
+      });
       return;
     }
 
@@ -207,32 +286,43 @@ export default function TimeTable({
         start: selectedStart,
         end: newEndCell,
         cells: rangeCells,
+        isExisting: false, // 새로 선택한 범위는 isExisting=false
       };
 
-      setSelectedRanges((prevRanges) => [...prevRanges, newRange]);
-      setSelectedStart(null);
-      setSelectedEnd(null);
+      setSelectedRanges((prevRanges) => {
+        const updatedRanges = [...prevRanges, newRange];
+        console.log('Added new range:', newRange); // 디버깅 로그
+        console.log('Updated ranges:', updatedRanges); // 디버깅 로그
+        if (onSelectionChange) {
+          const selectedCells = updatedRanges.flatMap((range) => range.cells);
+          onSelectionChange(selectedCells);
+        }
+        return updatedRanges;
+      });
 
-      // 선택된 셀들을 부모 컴포넌트로 전달
-      if (onSelectionChange) {
-        const selectedCells = selectedRanges.flatMap((range) => range.cells);
-        onSelectionChange([...selectedCells, ...rangeCells]);
-      }
+      setSelectedStart(null);
     } else {
       setSelectedStart({ rowIndex, cellIndex, subIndex, key });
     }
   };
 
+  // isSelected 함수 수정: 모든 범위에 대해 선택 여부를 확인
   const isSelected = (key: string): boolean => {
     return selectedRanges.some((range) => range.cells.includes(key));
   };
 
+  // isStart 함수 수정: isExisting=false인 범위의 시작 셀인지 확인
   const isStart = (key: string): boolean => {
-    return selectedStart?.key === key || selectedEnd?.key === key;
+    return selectedRanges.some(
+      (range) => !range.isExisting && range.start.key === key,
+    );
   };
 
+  // isEnd 함수 수정: isExisting=false인 범위의 끝 셀인지 확인
   const isEnd = (key: string): boolean => {
-    return selectedEnd?.key === key;
+    return selectedRanges.some(
+      (range) => !range.isExisting && range.end.key === key,
+    );
   };
 
   return (
@@ -288,10 +378,10 @@ export default function TimeTable({
                               key,
                               selectedCounts,
                             );
-                            const selectedByText =
-                              selectedBy[key]?.join(', ') || '선택자 없음'; // 선택자 정보
+                            const selectedByText = selectedBy[key]?.join(', '); // 선택자 정보, '선택자 없음' 생략
 
-                            return (
+                            // 조건부로 Tippy 적용
+                            return isReadOnly ? (
                               <Tippy
                                 content={selectedByText}
                                 key={key}
@@ -305,10 +395,9 @@ export default function TimeTable({
                                     key,
                                     selectedCounts,
                                   )}
-                                  key={key}
                                   isSelected={isSelected(key)}
-                                  isStart={isStart(key)}
-                                  isEnd={isEnd(key)}
+                                  isStart={!isReadOnly && isStart(key)} // 조건부 적용
+                                  isEnd={!isReadOnly && isEnd(key)} // 조건부 적용
                                   onClick={() =>
                                     !isReadOnly &&
                                     handleCellClick(
@@ -319,6 +408,23 @@ export default function TimeTable({
                                   }
                                 />
                               </Tippy>
+                            ) : (
+                              <S.Cell
+                                key={key}
+                                isSummary={isReadOnly}
+                                backgroundColor={backgroundColor}
+                                className={getCellClassName(
+                                  key,
+                                  selectedCounts,
+                                )}
+                                isSelected={isSelected(key)}
+                                isStart={!isReadOnly && isStart(key)} // 조건부 적용
+                                isEnd={!isReadOnly && isEnd(key)} // 조건부 적용
+                                onClick={() =>
+                                  !isReadOnly &&
+                                  handleCellClick(rowIndex, cellIndex, subIndex)
+                                }
+                              />
                             );
                           })}
                       </Fragment>

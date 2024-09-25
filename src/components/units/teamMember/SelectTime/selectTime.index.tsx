@@ -14,7 +14,7 @@ export default function SelectTime() {
   const [daysFromDB, setDaysFromDB] = useState<{ date: string; day: string }[]>(
     [],
   );
-  const [selectedCells, setSelectedCells] = useState<string[]>([]);
+  const [selectedCells, setSelectedCells] = useState<string[]>([]); // 선택된 시간을 저장
 
   const [duration, setDuration] = useState<string | null>(null);
   const [location, setLocation] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function SelectTime() {
     setIsButtonEnabled(cells.length > 0);
   };
 
-  // Firebase에서 meetingId로 문서 데이터 가져오기
+  // Firestore에서 회의 및 팀원 데이터를 불러오기
   useEffect(() => {
     const fetchMeetingData = async () => {
       if (meetingId) {
@@ -69,8 +69,32 @@ export default function SelectTime() {
       }
     };
 
+    const fetchTeamMemberData = async () => {
+      if (meetingId && name) {
+        // teamMembers 컬렉션에서 해당 팀원의 문서 가져오기
+        const teamMemberRef = doc(
+          db,
+          'meetings',
+          meetingId as string,
+          'teamMembers',
+          name as string, // 이름으로 문서 참조
+        );
+        const teamMemberSnap = await getDoc(teamMemberRef);
+
+        if (teamMemberSnap.exists()) {
+          const teamMemberData = teamMemberSnap.data();
+
+          // 팀원이 이미 선택한 시간이 있는 경우, selectedCells에 저장
+          if (teamMemberData.selectedTimes) {
+            setSelectedCells(teamMemberData.selectedTimes); // 선택된 시간을 상태로 설정
+          }
+        }
+      }
+    };
+
     fetchMeetingData();
-  }, [meetingId]);
+    fetchTeamMemberData();
+  }, [meetingId, name]);
 
   // 시간 범위를 생성하는 함수 (startTime ~ endTime)
   const generateTimeRange = (startTime: string, endTime: string): number[] => {
@@ -136,6 +160,7 @@ export default function SelectTime() {
           <TimeTable
             timesFromDB={timesFromDB}
             daysFromDB={daysFromDB}
+            selectedCells={selectedCells} // 선택된 셀 전달
             onSelectionChange={handleSelectionChange}
           />
         </S.Section>

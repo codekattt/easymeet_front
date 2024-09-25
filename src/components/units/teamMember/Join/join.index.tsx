@@ -1,41 +1,90 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../../commons/libraries/firebase'; // Firebase 초기화 파일
 import * as S from './join.styles';
 
 export default function Join() {
   const router = useRouter();
   const [name, setName] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // 에러 메시지 상태
 
-  const onClickButton = async () => {
-    const { meetingId } = router.query; // URL에서 meetingId 받아옴
+  const { meetingId } = router.query;
 
-    if (!name || !meetingId) return;
+  // 이름이 입력될 때마다 상태 업데이트
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+    setErrorMessage(null); // 이름이 변경될 때마다 에러 메시지 초기화
+  };
+
+  // '제출했던 시간을 수정하고 싶어요' 버튼
+  const onClickEditButton = async () => {
+    if (!name) {
+      setErrorMessage('이름을 입력해주세요');
+      return;
+    }
+
+    if (!meetingId) return;
 
     try {
-      // Firestore의 meetings/{meetingId}/teamMembers/{name} 경로에 문서를 생성
+      // Firestore에서 teamMembers/{name} 문서가 존재하는지 확인
       const teamMemberRef = doc(db, `meetings/${meetingId}/teamMembers`, name);
+      const docSnap = await getDoc(teamMemberRef);
 
-      // 문서 데이터 저장 (팀원의 기본 정보나 선택할 수 있는 데이터 등 추가 가능)
+      if (!docSnap.exists()) {
+        setErrorMessage('일치하는 이름이 없습니다.');
+        return;
+      }
+
+      const teamMemberData = docSnap.data();
+
+      // 수정할 시간 선택 페이지로 이동
+      router.push(
+        `/teammember?step=select&meetingId=${meetingId}&name=${name}`,
+      );
+    } catch (error) {
+      console.error('Error checking team member: ', error);
+      setErrorMessage('문서 확인 중 오류가 발생했습니다.');
+    }
+  };
+
+  // '가능한 시간 입력하기' 버튼
+  const onClickAddButton = async () => {
+    if (!name) {
+      setErrorMessage('이름을 입력해주세요');
+      return;
+    }
+
+    if (!meetingId) return;
+
+    try {
+      // Firestore에서 teamMembers/{name} 문서가 존재하는지 확인
+      const teamMemberRef = doc(db, `meetings/${meetingId}/teamMembers`, name);
+      const docSnap = await getDoc(teamMemberRef);
+
+      if (docSnap.exists()) {
+        setErrorMessage(
+          '이미 해당 이름이 존재합니다. 수정 버튼을 클릭해주세요.',
+        );
+        return;
+      }
+
+      // 새로운 팀원 문서 생성
       await setDoc(teamMemberRef, {
-        name: name, // 이름을 필드로 저장
-        joinedAt: new Date(), // 팀원이 참여한 시간 저장
-        status: 'joined', // 상태 정보 (선택 사항)
+        name: name,
+        joinedAt: new Date(),
+        selectedTimes: [], // 초기 상태에서 선택된 시간이 없을 때
+        status: 'joined',
       });
 
-      // 팀원이 입력한 이름을 query에 포함하여 다음 단계로 넘김
+      // 시간 입력 페이지로 이동
       router.push(
         `/teammember?step=select&meetingId=${meetingId}&name=${name}`,
       );
     } catch (error) {
       console.error('Error adding team member: ', error);
+      setErrorMessage('문서 추가 중 오류가 발생했습니다.');
     }
-  };
-
-  // 이름이 입력될 때마다 상태 업데이트
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
   };
 
   return (
@@ -58,11 +107,15 @@ export default function Join() {
             onChange={handleNameChange}
           />
         </S.Section>
+
+        {/* 에러 메시지 표시 */}
+        {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
+
         <S.ButtonWrapper>
-          <S.SubButton onClick={onClickButton}>
+          <S.SubButton onClick={onClickEditButton}>
             제출했던 시간을 수정하고 싶어요 ＞
           </S.SubButton>
-          <S.Button onClick={onClickButton} disabled={!name}>
+          <S.Button onClick={onClickAddButton} disabled={!name}>
             가능한 시간 입력
           </S.Button>
         </S.ButtonWrapper>
