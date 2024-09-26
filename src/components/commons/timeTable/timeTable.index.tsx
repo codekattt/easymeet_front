@@ -24,6 +24,7 @@ type TimeTableProps = {
   selectedCells?: string[];
   selectedCounts?: { [key: string]: number };
   selectedBy?: { [key: string]: string[] };
+  meetingType?: 'date' | 'weekday'; // 추가
   onSelectionChange?: (selectedCells: string[]) => void;
 };
 
@@ -34,6 +35,7 @@ export default function TimeTable({
   selectedCells = [],
   selectedCounts = {},
   selectedBy = {},
+  meetingType = 'date',
   onSelectionChange,
 }: TimeTableProps) {
   const totalDays = 7;
@@ -78,17 +80,23 @@ export default function TimeTable({
     cellIndex: number,
     subIndex: number,
   ): string => {
-    // 해당 날짜 및 시간 가져오기
-    const dayString = daysFromDB[rowIndex]?.date.replace(/\D/g, ''); // "0926"
-    const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
-      timesFromDB[cellIndex]
-    }`; // "12"
-
-    // 분 값 생성
-    const subString = subIndex === 0 ? '00' : '30';
-
-    // "MMDDHHmm" 형식의 키 생성
-    return `${dayString}${timeString}${subString}`;
+    if (meetingType === 'date') {
+      // 날짜 지정 방식
+      const dayString = daysFromDB[rowIndex]?.date.replace(/\D/g, ''); // "0926"
+      const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
+        timesFromDB[cellIndex]
+      }`; // "12"
+      const subString = subIndex === 0 ? '00' : '30';
+      return `${dayString}${timeString}${subString}`;
+    } else {
+      // 요일 지정 방식
+      const dayString = daysFromDB[rowIndex]?.date; // "월", "화", ...
+      const timeString = `${timesFromDB[cellIndex] < 10 ? '0' : ''}${
+        timesFromDB[cellIndex]
+      }`;
+      const subString = subIndex === 0 ? '00' : '30';
+      return `${dayString}${timeString}${subString}`;
+    }
   };
 
   // DB에서 팀원 시간 선택 데이터 받아오기 (읽기 전용 및 수정 모드)
@@ -104,17 +112,33 @@ export default function TimeTable({
       let currentRange: Range | null = null;
 
       sortedSelectedCells.forEach((cellKey) => {
-        const [dayString, timeString, subString] = [
-          cellKey.slice(0, 4), // "0926"
-          cellKey.slice(4, 6), // "12"
-          cellKey.slice(6), // "00"
-        ];
+        let rowIndex: number;
+        let cellIndex: number;
+        let subIndex: number;
 
-        const rowIndex = daysFromDB.findIndex(
-          (day) => day.date.replace(/\D/g, '') === dayString,
-        );
-        const cellIndex = timesFromDB.indexOf(parseInt(timeString, 10));
-        const subIndex = subString === '00' ? 0 : 1;
+        if (meetingType === 'date') {
+          const [dayString, timeString, subString] = [
+            cellKey.slice(0, 4), // "0926"
+            cellKey.slice(4, 6), // "12"
+            cellKey.slice(6), // "00"
+          ];
+
+          rowIndex = daysFromDB.findIndex(
+            (day) => day.date.replace(/\D/g, '') === dayString,
+          );
+          cellIndex = timesFromDB.indexOf(parseInt(timeString, 10));
+          subIndex = subString === '00' ? 0 : 1;
+        } else {
+          const [dayString, timeString, subString] = [
+            cellKey.slice(0, 1), // "월"
+            cellKey.slice(1, 3), // "12"
+            cellKey.slice(3), // "00"
+          ];
+
+          rowIndex = daysFromDB.findIndex((day) => day.date === dayString);
+          cellIndex = timesFromDB.indexOf(parseInt(timeString, 10));
+          subIndex = subString === '00' ? 0 : 1;
+        }
 
         if (rowIndex < 0 || cellIndex < 0) {
           // Invalid cell, skip

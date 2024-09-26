@@ -15,6 +15,7 @@ export default function SelectTime() {
     [],
   );
   const [selectedCells, setSelectedCells] = useState<string[]>([]); // 선택된 시간을 저장
+  const [meetingType, setMeetingType] = useState<'date' | 'weekday'>('date'); // meetingType 추가
 
   const [duration, setDuration] = useState<string | null>(null);
   const [location, setLocation] = useState<string | null>(null);
@@ -41,18 +42,31 @@ export default function SelectTime() {
             duration,
             location,
             customLocation,
+            type,
           } = meetingData;
 
-          // 날짜를 daysFromDB 형식으로 변환
-          const parsedDays = dates.map((date: string) => ({
-            date: new Date(date).toLocaleDateString('ko-KR', {
-              month: '2-digit',
-              day: '2-digit',
-            }),
-            day: new Date(date).toLocaleDateString('ko-KR', {
-              weekday: 'short',
-            }),
-          }));
+          // 회의 타입 설정
+          setMeetingType(type || 'date');
+
+          let parsedDays;
+          if (type === 'date') {
+            // 날짜를 daysFromDB 형식으로 변환
+            parsedDays = dates.map((date: string) => ({
+              date: new Date(date).toLocaleDateString('ko-KR', {
+                month: '2-digit',
+                day: '2-digit',
+              }),
+              day: new Date(date).toLocaleDateString('ko-KR', {
+                weekday: 'short',
+              }),
+            }));
+          } else {
+            // 요일을 daysFromDB 형식으로 변환
+            parsedDays = dates.map((day: string) => ({
+              date: day,
+              day: day,
+            }));
+          }
 
           // 시간 범위 생성 (시작 시간 ~ 종료 시간)
           const parsedTimes = generateTimeRange(startTime, endTime);
@@ -60,7 +74,6 @@ export default function SelectTime() {
           // 회의 정보 설정
           setDuration(duration || null);
           setLocation(customLocation || location || null);
-
           setTimesFromDB(parsedTimes);
           setDaysFromDB(parsedDays);
         } else {
@@ -146,8 +159,8 @@ export default function SelectTime() {
               <h3>진행됩니다.</h3>
             </S.Section>
             <img
-              src="/images/icon/downOutlined.png"
-              alt="downArrow"
+              src="/images/icon/DownOutlined.png"
+              alt="아래 화살표"
               style={{ marginBottom: '12px' }}
             />
           </>
@@ -162,6 +175,7 @@ export default function SelectTime() {
             daysFromDB={daysFromDB}
             selectedCells={selectedCells} // 선택된 셀 전달
             onSelectionChange={handleSelectionChange}
+            meetingType={meetingType}
           />
         </S.Section>
 

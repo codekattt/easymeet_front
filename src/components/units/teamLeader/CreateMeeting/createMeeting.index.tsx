@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import * as S from './createMeeting.styles';
 import DatePicker from '../../../commons/datePicker/datePicker.index';
 import Select, { SingleValue } from 'react-select';
+import * as S from './createMeeting.styles';
 
 import { db } from '../../../../commons/libraries/firebase';
 import { collection, addDoc } from 'firebase/firestore';
@@ -79,14 +79,14 @@ export default function CreateMeeting() {
     const formattedDates =
       meetingType === 'date'
         ? selectedDates
-            .sort((a, b) => a.getTime() - b.getTime()) // 날짜순으로 정렬
+            .sort((a, b) => a.getTime() - b.getTime())
             .map((date) => {
               const year = date.getFullYear();
               const month = (date.getMonth() + 1).toString().padStart(2, '0');
               const day = date.getDate().toString().padStart(2, '0');
               return `${year}-${month}-${day}`;
             })
-        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        : ['월', '화', '수', '목', '금', '토', '일']; // 요일 문자열을 저장
 
     const meetingData = {
       type: meetingType,
@@ -141,7 +141,7 @@ export default function CreateMeeting() {
             <S.Label htmlFor="weekday">요일 지정 - 정기회의용</S.Label>
           </div>
         </S.Section>
-        <img src="/images/icon/downOutlined.png" alt="아래 화살표" />
+        <img src="/images/icon/DownOutlined.png" alt="아래 화살표" />
         {meetingType === 'date' && (
           <DatePicker
             selectedDates={selectedDates}

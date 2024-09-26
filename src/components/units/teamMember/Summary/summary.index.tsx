@@ -17,6 +17,7 @@ export default function Summary() {
     [],
   );
 
+  const [meetingType, setMeetingType] = useState<'date' | 'weekday'>('date'); // 기본값은 'date'
   const [duration, setDuration] = useState<string | null>(null);
   const [location, setLocation] = useState<string | null>(null);
   const [bestMeetingTime, setBestMeetingTime] = useState<string | null>(null); // 최적 시간 저장
@@ -41,31 +42,53 @@ export default function Summary() {
               duration: fetchedDuration,
               location,
               customLocation,
+              type,
             } = meetingData;
 
-            // 최적 회의 시간 계산용 날짜 리스트 ("MMDD")
-            const parsedDaysForBestTime = dates.map((date: string) => {
-              const dateObj = new Date(date);
-              const month = (dateObj.getMonth() + 1)
-                .toString()
-                .padStart(2, '0');
-              const day = dateObj.getDate().toString().padStart(2, '0');
-              return {
-                date: `${month}${day}`, // "0925"
-                day: dateObj.toLocaleDateString('ko-KR', { weekday: 'short' }),
-              };
-            });
+            setMeetingType(type || 'date');
 
-            // TimeTable 렌더링용 날짜 리스트 ("MM. DD")
-            const parsedDaysForTimeTable = dates.map((date: string) => ({
-              date: new Date(date).toLocaleDateString('ko-KR', {
-                month: '2-digit',
-                day: '2-digit',
-              }),
-              day: new Date(date).toLocaleDateString('ko-KR', {
-                weekday: 'short',
-              }),
-            }));
+            let parsedDaysForBestTime;
+            let parsedDaysForTimeTable;
+
+            if (type === 'date') {
+              // 날짜 지정 방식
+              parsedDaysForBestTime = dates.map((date: string) => {
+                const dateObj = new Date(date);
+                const month = (dateObj.getMonth() + 1)
+                  .toString()
+                  .padStart(2, '0');
+                const day = dateObj.getDate().toString().padStart(2, '0');
+                return {
+                  date: `${month}${day}`, // "0925"
+                  day: dateObj.toLocaleDateString('ko-KR', {
+                    weekday: 'short',
+                  }),
+                };
+              });
+
+              // TimeTable 렌더링용 날짜 리스트 ("MM. DD")
+              parsedDaysForTimeTable = dates.map((date: string) => ({
+                date: new Date(date).toLocaleDateString('ko-KR', {
+                  month: '2-digit',
+                  day: '2-digit',
+                }),
+                day: new Date(date).toLocaleDateString('ko-KR', {
+                  weekday: 'short',
+                }),
+              }));
+            } else {
+              // 요일 지정 방식
+              parsedDaysForBestTime = dates.map((day: string) => ({
+                date: day, // "월", "화", ...
+                day: day,
+              }));
+
+              // TimeTable 렌더링용 요일 리스트
+              parsedDaysForTimeTable = dates.map((day: string) => ({
+                date: day, // "월", "화", ...
+                day: day,
+              }));
+            }
 
             const parsedTimes = generateTimeRange(startTime, endTime);
 
@@ -128,6 +151,7 @@ export default function Summary() {
           selectedTimesCount,
           fetchedDuration ? parseFloat(fetchedDuration) : null,
           parsedDaysForBestTime,
+          meetingType,
         );
         if (bestTimeResult) {
           setBestMeetingTime(
@@ -183,6 +207,7 @@ export default function Summary() {
             selectedCells={Object.keys(mergedSelectedTimes)}
             selectedCounts={mergedSelectedTimes}
             selectedBy={selectedBy}
+            meetingType={meetingType}
             isReadOnly
           />
         </S.Section>
