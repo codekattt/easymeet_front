@@ -2,7 +2,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import TimeTable from '../../../commons/timeTable/timeTable.index';
 import * as S from './selectTime.styles';
-import { doc, getDoc, collection, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  collection,
+  updateDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import { db } from '../../../../commons/libraries/firebase';
 
 export default function SelectTime() {
@@ -82,31 +88,30 @@ export default function SelectTime() {
       }
     };
 
-    const fetchTeamMemberData = async () => {
+    const fetchCurrentMemberData = async () => {
       if (meetingId && name) {
-        // teamMembers 컬렉션에서 해당 팀원의 문서 가져오기
-        const teamMemberRef = doc(
+        const currentMemberRef = doc(
           db,
           'meetings',
           meetingId as string,
           'teamMembers',
-          name as string, // 이름으로 문서 참조
+          name as string,
         );
-        const teamMemberSnap = await getDoc(teamMemberRef);
+        const currentMemberSnap = await getDoc(currentMemberRef);
 
-        if (teamMemberSnap.exists()) {
-          const teamMemberData = teamMemberSnap.data();
+        if (currentMemberSnap.exists()) {
+          const currentMemberData = currentMemberSnap.data();
 
           // 팀원이 이미 선택한 시간이 있는 경우, selectedCells에 저장
-          if (teamMemberData.selectedTimes) {
-            setSelectedCells(teamMemberData.selectedTimes); // 선택된 시간을 상태로 설정
+          if (currentMemberData.selectedTimes) {
+            setSelectedCells(currentMemberData.selectedTimes);
           }
         }
       }
     };
 
     fetchMeetingData();
-    fetchTeamMemberData();
+    fetchCurrentMemberData();
   }, [meetingId, name]);
 
   // 시간 범위를 생성하는 함수 (startTime ~ endTime)
@@ -129,7 +134,10 @@ export default function SelectTime() {
         name as string,
       );
       try {
-        await setDoc(teamMemberDocRef, { selectedTimes: selectedCells });
+        await updateDoc(teamMemberDocRef, {
+          selectedTimes: selectedCells,
+          updatedAt: Timestamp.now(),
+        });
         router.push(`/teammember?step=summary&meetingId=${meetingId}`);
       } catch (error) {
         console.error('Error saving selected times:', error);
@@ -173,7 +181,7 @@ export default function SelectTime() {
           <TimeTable
             timesFromDB={timesFromDB}
             daysFromDB={daysFromDB}
-            selectedCells={selectedCells} // 선택된 셀 전달
+            selectedCells={selectedCells}
             onSelectionChange={handleSelectionChange}
             meetingType={meetingType}
           />

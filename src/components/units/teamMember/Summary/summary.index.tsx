@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { db } from '../../../../commons/libraries/firebase';
 import TimeTable from '../../../commons/timeTable/timeTable.index';
-import { getBestMeetingTime } from '../../../../commons/libraries/utils/priorityMeetingTime';
+import { getBestMeetingTime } from '../../../../commons/libraries/utils/getBestMeetingTime';
 import * as S from './summary.styles';
 
 export default function Summary() {
@@ -100,7 +100,7 @@ export default function Summary() {
             setDaysFromDB(parsedDaysForTimeTable);
 
             // 팀원의 선택 시간을 가져옵니다.
-            fetchTeamMembersTimes(parsedDaysForBestTime, fetchedDuration);
+            fetchTeamMembersTimes(parsedDaysForBestTime, fetchedDuration, type);
           }
         } catch (error) {
           console.error('회의 데이터를 가져오는 중 오류 발생:', error);
@@ -114,6 +114,7 @@ export default function Summary() {
   const fetchTeamMembersTimes = async (
     parsedDaysForBestTime: { date: string; day: string }[],
     fetchedDuration: string,
+    meetingType: 'date' | 'weekday',
   ) => {
     if (meetingId) {
       try {
@@ -189,11 +190,11 @@ export default function Summary() {
           <h2>지금까지 유력한 회의 정보</h2>
           <S.RowWrapper>
             <img src="/images/icon/CalendarOutlined.png" />
-            <h2>{bestMeetingTime || '회의 시간 미정'}</h2>
+            <h2>{bestMeetingTime || '가능 시간 미정'}</h2>
           </S.RowWrapper>
           <S.RowWrapper>
             <img src="/images/icon/ClockCircleOutlined.png" />
-            <h2>{duration ? `${duration} 동안` : '회의 시간 미정'}</h2>
+            <h2>{duration ? `${duration} 동안` : '총 회의 시간 미정'}</h2>
           </S.RowWrapper>
           <S.RowWrapper>
             <img src="/images/icon/PushpinOutlined.png" />

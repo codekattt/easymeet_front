@@ -41,3 +41,21 @@ export default function TeamMemberPage(): JSX.Element {
     </div>
   );
 }
+
+export async function getServerSideProps(context: { query: any }) {
+  const { query } = context;
+  const { step } = query;
+
+  if (!step) {
+    return {
+      redirect: {
+        destination: '/teammember?step=join',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

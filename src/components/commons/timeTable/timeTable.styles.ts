@@ -74,36 +74,40 @@ export const Cell = styled.div<{
   background-color: ${({ isSelected, backgroundColor, isSummary, theme }) =>
     isSummary ? backgroundColor : isSelected ? theme.colors.point1 : 'white'};
 
-  /* 5번 중복 선택된 셀에 노란색 테두리 */
-  &.five-times-selected {
-    border: 2px solid yellow;
-  }
-
-  /* 시작 셀과 끝 셀 스타일 적용 */
-  ${({ isStart, theme }) =>
-    isStart &&
-    `
-    border: 2px solid ${theme.colors.point3};
-  `}
-
-  ${({ isEnd, theme }) =>
-    isEnd &&
-    `
-    border: 2px solid ${theme.colors.point3};
-  `}
-
-  /* 30분 구분선 */
-  &:nth-of-type(odd) {
-    border-bottom: 1px dashed ${({ theme }) => theme.colors.point2};
-  }
-
   /* border-bottom 안겹치도록 */
   &:last-of-type {
     border-bottom: none;
   }
 
+  /* 시작과 끝이 모두 선택된 경우 border 제거 */
+  ${({ isStart, isEnd }) =>
+    isStart &&
+    isEnd &&
+    `
+      border: none;
+    `}
+
+  /* 시작 셀과 끝 셀 스타일 적용 */
+  ${({ isStart, isEnd, theme }) =>
+    (isStart || isEnd) &&
+    !(isStart && isEnd) &&
+    `
+      border: 2px solid ${theme.colors.point3};
+    `}
+
+  /* 5번 중복 선택된 셀에 노란색 테두리 */
+  &.five-times-selected {
+    border: 2px solid yellow;
+  }
+
+  /* hover 스타일 */
   &:hover {
     border: 2px solid ${({ theme }) => theme.colors.point3};
+  }
+
+  /* 30분 구분선 */
+  &:nth-of-type(odd) {
+    border-bottom: 1px dashed ${({ theme }) => theme.colors.point2};
   }
 
   transition: background-color 0.1s, border 0.1s;

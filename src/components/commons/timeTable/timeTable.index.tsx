@@ -24,7 +24,7 @@ type TimeTableProps = {
   selectedCells?: string[];
   selectedCounts?: { [key: string]: number };
   selectedBy?: { [key: string]: string[] };
-  meetingType?: 'date' | 'weekday'; // 추가
+  meetingType?: 'date' | 'weekday';
   onSelectionChange?: (selectedCells: string[]) => void;
 };
 
@@ -42,6 +42,7 @@ export default function TimeTable({
   const timesForCells = timesFromDB.slice(0, -1);
 
   const [selectedStart, setSelectedStart] = useState<CellPosition | null>(null);
+  const [selectedEnd, setSelectedEnd] = useState<CellPosition | null>(null);
   const [selectedRanges, setSelectedRanges] = useState<Range[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -60,7 +61,7 @@ export default function TimeTable({
         nextCellIndex = 0;
         nextRowIndex += 1;
         if (nextRowIndex >= daysFromDB.length) {
-          return null; // No more cells
+          return null;
         }
       }
     }
@@ -282,14 +283,11 @@ export default function TimeTable({
 
     const existingRange = findRangeContainingCell(key);
 
-    // 이미 선택된 범위가 클릭되면 해당 범위 전체 삭제
     if (existingRange) {
       setSelectedRanges((prevRanges) => {
         const updatedRanges = prevRanges.filter(
           (range) => range !== existingRange,
         );
-        console.log('Removed range:', existingRange); // 디버깅 로그
-        console.log('Updated ranges:', updatedRanges); // 디버깅 로그
         if (onSelectionChange) {
           const remainingCells = updatedRanges.flatMap((range) => range.cells);
           onSelectionChange(remainingCells);
@@ -299,54 +297,59 @@ export default function TimeTable({
       return;
     }
 
-    // 새로 범위를 선택하는 경우
-    const newEndCell = { rowIndex, cellIndex, subIndex, key };
-
-    // 같은 열(rowIndex)에서만 범위 설정
-    if (selectedStart && selectedStart.rowIndex === rowIndex) {
-      const rangeCells = generateRangeCells(selectedStart, newEndCell);
-
-      const newRange: Range = {
-        start: selectedStart,
-        end: newEndCell,
-        cells: rangeCells,
-        isExisting: false, // 새로 선택한 범위는 isExisting=false
-      };
-
-      setSelectedRanges((prevRanges) => {
-        const updatedRanges = [...prevRanges, newRange];
-        console.log('Added new range:', newRange); // 디버깅 로그
-        console.log('Updated ranges:', updatedRanges); // 디버깅 로그
-        if (onSelectionChange) {
-          const selectedCells = updatedRanges.flatMap((range) => range.cells);
-          onSelectionChange(selectedCells);
-        }
-        return updatedRanges;
-      });
-
-      setSelectedStart(null);
-    } else {
+    if (!selectedStart) {
+      // 시작 셀 설정
       setSelectedStart({ rowIndex, cellIndex, subIndex, key });
+    } else if (!selectedEnd) {
+      // 끝 셀 설정 및 범위 추가
+      const newEndCell = { rowIndex, cellIndex, subIndex, key };
+      setSelectedEnd(newEndCell);
+
+      // 같은 열(rowIndex)에서만 범위 설정
+      if (selectedStart.rowIndex === rowIndex) {
+        const rangeCells = generateRangeCells(selectedStart, newEndCell);
+
+        const newRange: Range = {
+          start: selectedStart,
+          end: newEndCell,
+          cells: rangeCells,
+          isExisting: false,
+        };
+
+        setSelectedRanges((prevRanges) => {
+          const updatedRanges = [...prevRanges, newRange];
+          if (onSelectionChange) {
+            const selectedCells = updatedRanges.flatMap((range) => range.cells);
+            onSelectionChange(selectedCells);
+          }
+          return updatedRanges;
+        });
+
+        // 선택 초기화
+        setSelectedStart(null);
+        setSelectedEnd(null);
+      } else {
+        // 다른 열을 선택할 경우, 시작을 업데이트
+        setSelectedStart(newEndCell);
+        setSelectedEnd(null);
+      }
+    } else {
+      // 새로운 시작 셀 설정
+      setSelectedStart({ rowIndex, cellIndex, subIndex, key });
+      setSelectedEnd(null);
     }
   };
 
-  // isSelected 함수 수정: 모든 범위에 대해 선택 여부를 확인
   const isSelected = (key: string): boolean => {
     return selectedRanges.some((range) => range.cells.includes(key));
   };
 
-  // isStart 함수 수정: isExisting=false인 범위의 시작 셀인지 확인
   const isStart = (key: string): boolean => {
-    return selectedRanges.some(
-      (range) => !range.isExisting && range.start.key === key,
-    );
+    return selectedStart?.key === key;
   };
 
-  // isEnd 함수 수정: isExisting=false인 범위의 끝 셀인지 확인
   const isEnd = (key: string): boolean => {
-    return selectedRanges.some(
-      (range) => !range.isExisting && range.end.key === key,
-    );
+    return selectedEnd?.key === key;
   };
 
   return (
@@ -371,7 +374,14 @@ export default function TimeTable({
                   <S.Day key={rowIndex}>
                     {dayData ? (
                       <>
-                        <span>{dayData.date}</span>
+                        <span
+                          style={{
+                            visibility:
+                              meetingType === 'weekday' ? 'hidden' : 'visible',
+                          }}
+                        >
+                          {dayData.date}
+                        </span>
                         <span>{dayData.day}</span>
                       </>
                     ) : (
@@ -402,9 +412,8 @@ export default function TimeTable({
                               key,
                               selectedCounts,
                             );
-                            const selectedByText = selectedBy[key]?.join(', '); // 선택자 정보, '선택자 없음' 생략
+                            const selectedByText = selectedBy[key]?.join(', ');
 
-                            // 조건부로 Tippy 적용
                             return isReadOnly ? (
                               <Tippy
                                 content={selectedByText}
@@ -420,8 +429,8 @@ export default function TimeTable({
                                     selectedCounts,
                                   )}
                                   isSelected={isSelected(key)}
-                                  isStart={!isReadOnly && isStart(key)} // 조건부 적용
-                                  isEnd={!isReadOnly && isEnd(key)} // 조건부 적용
+                                  isStart={!isReadOnly && isStart(key)}
+                                  isEnd={!isReadOnly && isEnd(key)}
                                   onClick={() =>
                                     !isReadOnly &&
                                     handleCellClick(
@@ -442,8 +451,8 @@ export default function TimeTable({
                                   selectedCounts,
                                 )}
                                 isSelected={isSelected(key)}
-                                isStart={!isReadOnly && isStart(key)} // 조건부 적용
-                                isEnd={!isReadOnly && isEnd(key)} // 조건부 적용
+                                isStart={!isReadOnly && isStart(key)}
+                                isEnd={!isReadOnly && isEnd(key)}
                                 onClick={() =>
                                   !isReadOnly &&
                                   handleCellClick(rowIndex, cellIndex, subIndex)

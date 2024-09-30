@@ -119,12 +119,6 @@ export function getBestMeetingTime(
     bestDayKey = bestDayChar; // "수";
   }
 
-  // 디버깅 로그 추가
-  console.log(`bestTimeSlot.timeKey: ${bestTimeSlot.timeKey}`);
-  console.log(`bestDayKey: ${bestDayKey}`);
-  console.log(`bestHour: ${bestHour}`);
-  console.log(`bestMin: ${bestMin}`);
-
   const bestDayObj = daysForBestTime.find((day) => {
     if (meetingType === 'date') {
       return day.date === bestDayKey; // "MMDD" 형식으로 비교

@@ -4,7 +4,7 @@ import * as S from './additionalSettings.styles';
 import Select, { SingleValue } from 'react-select';
 
 import { db } from '../../../../commons/libraries/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, Timestamp } from 'firebase/firestore';
 
 export default function AdditionalSettings() {
   const router = useRouter();
@@ -73,6 +73,7 @@ export default function AdditionalSettings() {
       duration: selectedTime?.value || null,
       location: selectedLocation?.value || null,
       customLocation: customLocation || null,
+      updatedAt: Timestamp.now(),
     };
 
     try {

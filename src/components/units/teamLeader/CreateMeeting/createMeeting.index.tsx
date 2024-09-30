@@ -5,7 +5,7 @@ import Select, { SingleValue } from 'react-select';
 import * as S from './createMeeting.styles';
 
 import { db } from '../../../../commons/libraries/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 export default function CreateMeeting() {
   const router = useRouter();
@@ -94,6 +94,7 @@ export default function CreateMeeting() {
       startTime: selectedStartTime?.value || '09:00',
       endTime: selectedEndTime?.value || '24:00',
       meetingName: meetingName || '',
+      createAt: Timestamp.now(),
     };
 
     try {

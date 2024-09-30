@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../../../../commons/libraries/firebase'; // Firebase 초기화 파일
 import * as S from './join.styles';
 
@@ -72,7 +72,7 @@ export default function Join() {
       // 새로운 팀원 문서 생성
       await setDoc(teamMemberRef, {
         name: name,
-        joinedAt: new Date(),
+        joinedAt: Timestamp.now(),
         selectedTimes: [], // 초기 상태에서 선택된 시간이 없을 때
         status: 'joined',
       });

@@ -82,6 +82,7 @@ export const Input = styled.input`
   border: 1px solid #6773ef;
   border-radius: 10px;
   margin-bottom: 10px;
+  font-size: 16px;
 `;
 
 export const ErrorMessage = styled.h5`

@@ -75,6 +75,7 @@ export const Input = styled.input`
   padding: 10px 15px;
   border: 1px solid #6773ef;
   border-radius: 10px;
+  font-size: 16px;
 `;
 
 export const SelectWrapper = styled.div`
