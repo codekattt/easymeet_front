@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
           property="og:description"
           content="세상에서 가장 쉬운 모임시간 잡기! Easy Meet으로 간편하게 모임시간을 조정하세요."
         />
-        <meta property="og:image" content="/images/icon/easymeet_logo.png" />
+        <meta property="og:image" content="/images/logos/easymeet_logo.png" />
         <meta property="og:url" content="페이지 URL" />
         <meta property="og:type" content="website" />
         <meta

@@ -148,7 +148,7 @@ export default function CreateMeeting() {
           <h2>
             어떤 방식으로 회의날짜를 정할까요?<span>*</span>
           </h2>
-          <div>
+          <S.RadioWrapper>
             <S.Radio
               type="radio"
               id="date"
@@ -158,8 +158,8 @@ export default function CreateMeeting() {
               onChange={onChangeRadio}
             />
             <S.Label htmlFor="date">날짜 지정 - 기본</S.Label>
-          </div>
-          <div>
+          </S.RadioWrapper>
+          <S.RadioWrapper>
             <S.Radio
               type="radio"
               id="weekday"
@@ -169,9 +169,9 @@ export default function CreateMeeting() {
               onChange={onChangeRadio}
             />
             <S.Label htmlFor="weekday">요일 지정 - 정기회의용</S.Label>
-          </div>
+          </S.RadioWrapper>
         </S.Section>
-        <img src="/images/icon/DownOutlined.png" alt="아래 화살표" />
+        <img src="/images/icons/common/DownOutlined.png" alt="아래 화살표" />
         {meetingType === 'date' && (
           <DatePicker
             selectedDates={selectedDates}

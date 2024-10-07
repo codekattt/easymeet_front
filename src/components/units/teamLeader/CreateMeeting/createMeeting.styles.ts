@@ -59,14 +59,22 @@ export const Section = styled.section`
   margin: 0 0 7px 0;
 `;
 
-export const Radio = styled.input`
+export const RadioWrapper = styled.div`
+  display: flex;
+  align-items: center; // 수직 가운데 정렬
   margin-bottom: 12px;
+`;
+
+export const Radio = styled.input`
+  margin-right: 8px; // 라디오와 라벨 간의 간격 설정
+  width: 20px;
+  height: 20px;
+  accent-color: #4a90e2;
 `;
 
 export const Label = styled.label`
   font-size: 20px;
   font-weight: 400;
-  margin-left: 10px;
 `;
 
 export const Input = styled.input`

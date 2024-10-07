@@ -125,6 +125,17 @@ export const Button = styled.button`
   cursor: pointer;
   transition: background-color 0.3s ease;
 
+  & div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    & img {
+      margin: 0 4px 0 0;
+    }
+  }
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.point2};
   }

@@ -167,7 +167,7 @@ export default function SelectTime() {
               <h3>진행됩니다.</h3>
             </S.Section>
             <img
-              src="/images/icon/DownOutlined.png"
+              src="/images/icons/common/DownOutlined.png"
               alt="아래 화살표"
               style={{ marginBottom: '12px' }}
             />

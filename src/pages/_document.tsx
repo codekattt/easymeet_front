@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="ko">
       <Head>
         <meta charSet="UTF-8" />
-        <link rel="icon" href="/images/icon/brand_favicon.webp" />
+        <link rel="icon" href="/images/logos/easymeet_favicon.png" />
         <meta name="theme-color" content="#000000" />
         <meta
           name="description"

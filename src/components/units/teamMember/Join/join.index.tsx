@@ -91,7 +91,7 @@ export default function Join() {
     <S.Wrapper>
       <S.Container>
         <S.Section style={{ display: 'flex', flexDirection: 'row' }}>
-          <img src="/images/icon/calendar_icon.webp" />
+          <img src="/images/icons/animated/calendar_icon.webp" />
           <S.InnerText>
             순식간에 정하는
             <br />

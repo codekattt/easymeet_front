@@ -20,7 +20,7 @@ export default function Complete() {
       setIsModalVisible(true); // 모달 표시
       setTimeout(() => {
         setIsModalVisible(false); // 3초 후 모달 자동 닫기
-      }, 3000);
+      }, 5000);
     } catch (err) {
       alert('링크 복사에 실패했습니다. 다시 시도해주세요.');
       console.error('Failed to copy the link: ', err);
@@ -32,8 +32,6 @@ export default function Complete() {
     router.push(`/teammember?step=join&meetingId=${meetingId}`);
   };
 
-  const onClickCheckMyTime = () => {};
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -42,7 +40,7 @@ export default function Complete() {
     <S.Wrapper>
       <S.Container>
         <S.Section>
-          <img src="/images/icon/check_icon.apng" alt="check icon" />
+          <img src="/images/icons/animated/check_icon.apng" alt="check icon" />
           <span>
             순식간에 회의페이지 생성 완료!
             <br />
@@ -50,7 +48,11 @@ export default function Complete() {
           </span>
         </S.Section>
         <S.ButtonWrapper>
-          <S.Button onClick={onClickCopyLink}>링크복사</S.Button>
+          <S.Button onClick={onClickCopyLink}>
+            <div>
+              <img src="/images/icons/common/LinkOutlined.svg" /> 링크복사
+            </div>
+          </S.Button>
           <S.Button onClick={onClickButton}>나도 가능시간 입력하기</S.Button>
         </S.ButtonWrapper>
       </S.Container>
