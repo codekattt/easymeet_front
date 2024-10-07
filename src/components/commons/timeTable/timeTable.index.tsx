@@ -197,10 +197,10 @@ export default function TimeTable({
   // 팀원 중복 선택된 횟수에 따라 색상 변경
   const colorMap: { [key: number]: string } = {
     0: 'white',
-    1: '#6773EF',
-    2: '#5A62E7',
-    3: '#4A53D6',
-    4: '#3D439E',
+    1: '#A7E6FF',
+    2: '#3ABEF9',
+    3: '#3572EF',
+    4: '#4A53D6',
     5: '#3D439E',
   };
 
@@ -414,7 +414,7 @@ export default function TimeTable({
                             );
                             const selectedByText = selectedBy[key]?.join(', ');
 
-                            return isReadOnly ? (
+                            return selectedByText ? (
                               <Tippy
                                 content={selectedByText}
                                 key={key}
