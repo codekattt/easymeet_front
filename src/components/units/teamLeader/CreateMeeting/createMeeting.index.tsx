@@ -14,11 +14,14 @@ export default function CreateMeeting() {
   const [meetingName, setMeetingName] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
+  // 요일 선택을 위한 상태
+  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
+
   const [selectedStartTime, setSelectedStartTime] = useState<
     SingleValue<{ value: string; label: string }>
   >({
-    value: '09:00',
-    label: '09:00',
+    value: '07:00',
+    label: '07:00',
   });
   const [selectedEndTime, setSelectedEndTime] = useState<
     SingleValue<{ value: string; label: string }>
@@ -31,12 +34,29 @@ export default function CreateMeeting() {
     { value: string; label: string }[]
   >([]);
 
+  const weekdays = [
+    { value: '월', label: '월' },
+    { value: '화', label: '화' },
+    { value: '수', label: '수' },
+    { value: '목', label: '목' },
+    { value: '금', label: '금' },
+    { value: '토', label: '토' },
+    { value: '일', label: '일' },
+  ];
+
   const onChangeMeetingName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMeetingName(event.target.value);
   };
 
   const onChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMeetingType(event.target.value);
+  };
+
+  const handleWeekdayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    setSelectedWeekdays((prev) =>
+      checked ? [...prev, value] : prev.filter((day) => day !== value),
+    );
   };
 
   const generateTimeOptions = () => {
@@ -67,13 +87,22 @@ export default function CreateMeeting() {
         selectedDates.length > 0 &&
         selectedStartTime &&
         selectedEndTime) ||
-      (meetingType === 'weekday' && selectedStartTime && selectedEndTime)
+      (meetingType === 'weekday' &&
+        selectedWeekdays.length > 0 &&
+        selectedStartTime &&
+        selectedEndTime)
     ) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  }, [meetingType, selectedDates, selectedStartTime, selectedEndTime]);
+  }, [
+    meetingType,
+    selectedDates,
+    selectedWeekdays,
+    selectedStartTime,
+    selectedEndTime,
+  ]);
 
   const saveDataToFB = async () => {
     const formattedDates =
@@ -86,7 +115,7 @@ export default function CreateMeeting() {
               const day = date.getDate().toString().padStart(2, '0');
               return `${year}-${month}-${day}`;
             })
-        : ['월', '화', '수', '목', '금', '토', '일']; // 요일 문자열을 저장
+        : selectedWeekdays; // 사용자가 선택한 요일만 저장
 
     const meetingData = {
       type: meetingType,
@@ -149,7 +178,47 @@ export default function CreateMeeting() {
             setSelectedDates={setSelectedDates}
           />
         )}
-        <S.Section>
+        {meetingType === 'weekday' && (
+          <S.Section>
+            <h2>원하는 요일을 선택하세요</h2>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {weekdays.map((day) => (
+                <label
+                  key={day.value}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: selectedWeekdays.includes(day.value)
+                      ? '#4A90E2'
+                      : '#f0f0f0',
+                    color: selectedWeekdays.includes(day.value)
+                      ? 'white'
+                      : 'black',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    value={day.value}
+                    checked={selectedWeekdays.includes(day.value)}
+                    onChange={handleWeekdayChange}
+                    style={{
+                      display: 'none',
+                    }}
+                  />
+                  {day.label}
+                </label>
+              ))}
+            </div>
+          </S.Section>
+        )}
+        <S.Section style={{ display: 'none' }}>
           <h2>
             회의 시간은<span>*</span>
           </h2>

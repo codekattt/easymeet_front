@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="ko">
       <Head>
         <meta charSet="UTF-8" />
-        <link rel="icon" href="/images/icon/complete_check_icon.webp" />
+        <link rel="icon" href="/images/icon/brand_favicon.webp" />
         <meta name="theme-color" content="#000000" />
         <meta
           name="description"
