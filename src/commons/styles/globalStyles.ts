@@ -5,6 +5,11 @@ export const globalStyles = css`
     margin: 0;
     box-sizing: border-box;
     font-family: 'NanumSquare', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input:focus {
+    outline: none;
   }
 
   @font-face {

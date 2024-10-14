@@ -39,9 +39,7 @@ export default function Join() {
       const teamMemberData = docSnap.data();
 
       // 수정할 시간 선택 페이지로 이동
-      router.push(
-        `/teammember?step=select&meetingId=${meetingId}&name=${name}`,
-      );
+      router.push(`/member?step=select&meetingId=${meetingId}&name=${name}`);
     } catch (error) {
       console.error('Error checking team member: ', error);
       setErrorMessage('문서 확인 중 오류가 발생했습니다.');
@@ -78,9 +76,7 @@ export default function Join() {
       });
 
       // 시간 입력 페이지로 이동
-      router.push(
-        `/teammember?step=select&meetingId=${meetingId}&name=${name}`,
-      );
+      router.push(`/member?step=select&meetingId=${meetingId}&name=${name}`);
     } catch (error) {
       console.error('Error adding team member: ', error);
       setErrorMessage('문서 추가 중 오류가 발생했습니다.');

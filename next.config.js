@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/teamleader?step=create',
+        destination: '/leader?step=create',
         permanent: true,
       },
     ];

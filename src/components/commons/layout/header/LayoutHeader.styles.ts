@@ -17,7 +17,7 @@ export const InnerWrapper = styled.div`
   font-size: 16px;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.colors.menuDivide};
-  background-color: white;
+  background-color: #fff;
   padding: 12px 0;
 `;
 

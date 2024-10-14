@@ -138,7 +138,7 @@ export default function SelectTime() {
           selectedTimes: selectedCells,
           updatedAt: Timestamp.now(),
         });
-        router.push(`/teammember?step=summary&meetingId=${meetingId}`);
+        router.push(`/member?step=summary&meetingId=${meetingId}`);
       } catch (error) {
         console.error('Error saving selected times:', error);
       }
@@ -154,20 +154,16 @@ export default function SelectTime() {
           <>
             <S.Section>
               <h2>회의정보</h2>
-              {duration && (
-                <h3>
-                  <span>{duration}</span> 동안
-                </h3>
-              )}
-              {location && (
-                <h3>
-                  <span>{location}</span>에서
-                </h3>
-              )}
-              <h3>진행됩니다.</h3>
+              <h3>
+                {duration && <span>{duration}</span>}
+                {duration && '동안, '}
+                {location && <span>{location}</span>}
+                {location && '에서 '}
+                진행됩니다.
+              </h3>
             </S.Section>
             <img
-              src="/images/icons/common/DownOutlined.png"
+              src="/images/icons/common/DownOutlined.svg"
               alt="아래 화살표"
               style={{ marginBottom: '12px' }}
             />

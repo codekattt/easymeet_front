@@ -49,7 +49,7 @@ export async function getServerSideProps(context: { query: any }) {
   if (!step) {
     return {
       redirect: {
-        destination: '/teamleader?step=create',
+        destination: '/leader?step=create',
         permanent: false,
       },
     };

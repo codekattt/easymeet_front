@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Modal } from 'antd';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -149,33 +150,42 @@ export const Button = styled.button`
 
 // 모달 디자인
 
+export const CustomModal = styled(Modal)`
+  .ant-modal-content {
+    background-color: ${({ theme }) =>
+      theme.colors.point2}; // 원하는 배경색으로 변경
+  }
+`;
+
 export const ModalContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  height: 10px;
+  padding: 5px;
 `;
 
 export const ModalTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-export const ModalDescription = styled.p`
-  font-size: 14px;
-  margin-bottom: 20px;
-  text-align: center;
-`;
-
-export const ModalButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.point1};
   color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.point2};
-  }
 `;
+
+// export const ModalDescription = styled.p`
+//   font-size: 14px;
+//   margin-bottom: 20px;
+//   text-align: center;
+// `;
+
+// export const ModalButton = styled.button`
+//   background-color: ${({ theme }) => theme.colors.point1};
+//   color: white;
+//   border: none;
+//   border-radius: 5px;
+//   padding: 10px 20px;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: ${({ theme }) => theme.colors.point2};
+//   }
+// `;

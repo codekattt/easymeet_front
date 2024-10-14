@@ -79,7 +79,7 @@ export default function AdditionalSettings() {
     try {
       const meetingRef = doc(db, 'meetings', meetingId as string);
       await updateDoc(meetingRef, additionalData);
-      router.push(`/teamleader?step=complete&meetingId=${meetingId}`);
+      router.push(`/leader?step=complete&meetingId=${meetingId}`);
     } catch (error) {
       console.error('Error updating meeting: ', error);
     }
@@ -87,7 +87,7 @@ export default function AdditionalSettings() {
 
   // 건너뛰기 버튼 클릭 시 바로 다음 단계로 이동
   const onClickPass = () => {
-    router.push(`/teamleader?step=complete&meetingId=${meetingId}`);
+    router.push(`/leader?step=complete&meetingId=${meetingId}`);
   };
 
   return (

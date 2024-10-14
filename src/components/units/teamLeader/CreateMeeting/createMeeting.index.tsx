@@ -105,6 +105,8 @@ export default function CreateMeeting() {
   ]);
 
   const saveDataToFB = async () => {
+    const weekdayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+
     const formattedDates =
       meetingType === 'date'
         ? selectedDates
@@ -115,7 +117,12 @@ export default function CreateMeeting() {
               const day = date.getDate().toString().padStart(2, '0');
               return `${year}-${month}-${day}`;
             })
-        : selectedWeekdays; // 사용자가 선택한 요일만 저장
+        : selectedWeekdays.sort(
+            (a, b) => weekdayOrder.indexOf(a) - weekdayOrder.indexOf(b),
+          );
+
+    // 현재 환경이 테스트 환경인지 확인
+    const isTestEnvironment = window.location.hostname === 'localhost';
 
     const meetingData = {
       type: meetingType,
@@ -124,12 +131,13 @@ export default function CreateMeeting() {
       endTime: selectedEndTime?.value || '24:00',
       meetingName: meetingName || '',
       createAt: Timestamp.now(),
+      environment: isTestEnvironment ? 'test' : 'production', // 환경 정보 추가
     };
 
     try {
       const docRef = await addDoc(collection(db, 'meetings'), meetingData);
       const meetingId = docRef.id;
-      router.push(`/teamleader?step=add&meetingId=${meetingId}`);
+      router.push(`/leader?step=add&meetingId=${meetingId}`);
     } catch (error) {
       console.error('Error saving meeting: ', error);
     }
@@ -137,7 +145,7 @@ export default function CreateMeeting() {
 
   const onClickButton = () => {
     saveDataToFB();
-    router.push('/teamleader?step=add');
+    router.push('/leader?step=add');
   };
 
   return (
@@ -171,7 +179,7 @@ export default function CreateMeeting() {
             <S.Label htmlFor="weekday">요일 지정 - 정기회의용</S.Label>
           </S.RadioWrapper>
         </S.Section>
-        <img src="/images/icons/common/DownOutlined.png" alt="아래 화살표" />
+        <img src="/images/icons/common/DownOutlined.svg" alt="DownArrow" />
         {meetingType === 'date' && (
           <DatePicker
             selectedDates={selectedDates}
@@ -181,41 +189,22 @@ export default function CreateMeeting() {
         {meetingType === 'weekday' && (
           <S.Section>
             <h2>원하는 요일을 선택하세요</h2>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <S.WeekdaysWrapper>
               {weekdays.map((day) => (
-                <label
+                <S.WeekdayLabel
                   key={day.value}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '50%',
-                    backgroundColor: selectedWeekdays.includes(day.value)
-                      ? '#4A90E2'
-                      : '#f0f0f0',
-                    color: selectedWeekdays.includes(day.value)
-                      ? 'white'
-                      : 'black',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.3s ease',
-                  }}
+                  isSelected={selectedWeekdays.includes(day.value)}
                 >
-                  <input
+                  <S.HiddenCheckbox
                     type="checkbox"
                     value={day.value}
                     checked={selectedWeekdays.includes(day.value)}
                     onChange={handleWeekdayChange}
-                    style={{
-                      display: 'none',
-                    }}
                   />
                   {day.label}
-                </label>
+                </S.WeekdayLabel>
               ))}
-            </div>
+            </S.WeekdaysWrapper>
           </S.Section>
         )}
         <S.Section style={{ display: 'none' }}>
