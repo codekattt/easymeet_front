@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: rgba(255, 255, 255, 0.1);
 `;
 
 export const Container = styled.div`
@@ -15,9 +16,12 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 */
   padding: 20px;
-  background-color: #f7f7f7;
+  /* border-radius: 20px; */
+  background: rgba(255, 255, 255, 0.3); /* 글래스모피즘 스타일 투명도 */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* 약한 경계선 */
+  padding-bottom: 20px;
 
   & img {
     max-width: 100%;
@@ -29,13 +33,15 @@ export const Container = styled.div`
   & h1 {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #333; /* 다크 그레이 색상 */
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 20px;
+    color: #555; /* 중간 그레이 */
 
     & span {
       color: #d92525;
@@ -46,6 +52,7 @@ export const Container = styled.div`
   & h3 {
     font-size: 16px;
     font-weight: 300;
+    color: #666;
   }
 `;
 
@@ -58,13 +65,11 @@ export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  border: none;
-  padding-top: 25px;
-  padding-left: 15px;
-  padding-bottom: 26px;
-  background-color: white;
-  box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 120px 0;
+  padding: 30px 20px; /* 더 넉넉한 패딩 */
+  background: rgba(255, 255, 255, 0.25); /* 섹션 배경 투명도 조정 */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 15px 0; /* 섹션 간의 간격 추가 */
 
   & img {
     width: 250px;
@@ -83,7 +88,6 @@ export const Section = styled.section`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   position: fixed;
   bottom: 0;
@@ -91,11 +95,10 @@ export const ButtonWrapper = styled.div`
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: #f7f7f7;
+  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
-  /* 버튼 위쪽에 그라데이션 추가 */
   &::before {
     content: '';
     position: absolute;
@@ -103,12 +106,7 @@ export const ButtonWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 30px;
-    background: linear-gradient(
-      to bottom,
-      rgba(247, 247, 247, 0) 0%,
-      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
-        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
-    );
+    background: transparent;
     z-index: -1;
   }
 `;
@@ -116,13 +114,13 @@ export const ButtonWrapper = styled.div`
 export const Button = styled.button`
   width: 100%;
   height: 45px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
+  margin: 0 4px;
   border: none;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.point1};
+  background-color: rgba(74, 144, 226, 1);
   color: white;
-  margin-bottom: 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -138,11 +136,11 @@ export const Button = styled.button`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.point2};
+    background-color: rgba(74, 144, 226, 1);
   }
 
   &:disabled {
-    background-color: #ccc;
+    background-color: rgba(204, 204, 204, 1);
     color: white;
     cursor: default;
   }
@@ -152,8 +150,7 @@ export const Button = styled.button`
 
 export const CustomModal = styled(Modal)`
   .ant-modal-content {
-    background-color: ${({ theme }) =>
-      theme.colors.point2}; // 원하는 배경색으로 변경
+    background-color: ${({ theme }) => theme.colors.point2};
   }
 `;
 

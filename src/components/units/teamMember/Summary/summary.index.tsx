@@ -183,22 +183,25 @@ export default function Summary() {
     <S.Wrapper>
       <S.Container>
         <S.RowWrapper>
-          <img src="/images/icons/animated/check_icon.apng" />
-          <h1>가능 시간 설정 완료</h1>
+          <img
+            src="/images/icons/animated/check_icon.apng"
+            style={{ width: '40px' }}
+          />
+          <S.Title>가능 시간 설정 완료</S.Title>
         </S.RowWrapper>
         <S.Section>
           <h2>지금까지 유력한 회의 정보</h2>
           <S.RowWrapper>
             <img src="/images/icons/common/CalendarOutlined.png" />
-            <h2>{bestMeetingTime || '가능 시간 미정'}</h2>
+            <h3>{bestMeetingTime || '가능 시간 미정'}</h3>
           </S.RowWrapper>
           <S.RowWrapper>
             <img src="/images/icons/common/ClockCircleOutlined.png" />
-            <h2>{duration ? `${duration} 동안` : '총 회의 시간 미정'}</h2>
+            <h3>{duration ? `${duration} 동안` : '총 회의 시간 미정'}</h3>
           </S.RowWrapper>
           <S.RowWrapper>
             <img src="/images/icons/common/PushpinOutlined.png" />
-            <h2>{location}</h2>
+            <h3>{location}</h3>
           </S.RowWrapper>
         </S.Section>
         <S.Section>

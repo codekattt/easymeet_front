@@ -15,7 +15,7 @@ export const TimeWrapper = styled.div`
   padding-top: 41px; /* 시작점에서 약간의 여백을 줌 */
   margin-bottom: -24px; /* 끝 지점에서 약간의 여백을 줌 */
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.point2};
+  color: rgba(74, 144, 226, 1);
 `;
 
 export const WeekWrapper = styled.div`
@@ -40,7 +40,7 @@ export const Day = styled.div`
   /* 첫 번째 span (날짜) */
   span:first-of-type {
     font-size: 12px;
-    color: ${({ theme }) => theme.colors.point2};
+    color: rgba(74, 144, 226, 1);
     margin-bottom: 2px;
   }
 
@@ -53,7 +53,7 @@ export const Day = styled.div`
 export const CellWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid ${({ theme }) => theme.colors.point2};
+  border: 1px solid rgba(74, 144, 226, 1);
   border-radius: 1px;
   background-color: ${({ theme }) => theme.colors.subLine};
 `;
@@ -62,11 +62,11 @@ export const Cell = styled.div<{
   isSelected: boolean;
   isStart: boolean;
   isEnd: boolean;
-  isSummary: boolean; // summary 페이지 여부 추가
-  backgroundColor: string; // 배경 색상 추가
+  isSummary: boolean;
+  backgroundColor: string;
 }>`
-  border-right: 1px solid ${({ theme }) => theme.colors.point2};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.point2};
+  border-right: 1px solid rgba(74, 144, 226, 1);
+  border-bottom: 1px solid rgba(74, 144, 226, 1);
   flex: 1;
   width: 100%;
   min-height: 1.6rem;
@@ -76,7 +76,7 @@ export const Cell = styled.div<{
 
   /* 30분 구분선 */
   &:nth-of-type(odd) {
-    border-bottom: 1px dashed ${({ theme }) => theme.colors.point2};
+    border-bottom: 1px dashed rgba(74, 144, 226, 1);
   }
 
   /* border-bottom 안겹치도록 */
@@ -107,7 +107,7 @@ export const Cell = styled.div<{
 
   /* hover 스타일 */
   &:hover {
-    border: 4px solid ${({ theme }) => theme.colors.point3};
+    border: 2px solid ${({ theme }) => theme.colors.point3};
   }
 
   transition: background-color 0.1s, border 0.1s;

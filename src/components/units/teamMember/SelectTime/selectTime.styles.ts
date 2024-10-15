@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(255, 255, 255, 0.1);
 `;
 
 export const Container = styled.div`
@@ -13,9 +14,11 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  background-color: #f7f7f7;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 20px;
 
   & img {
     max-width: 100%;
@@ -27,19 +30,25 @@ export const Container = styled.div`
   & h1 {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #333; /* 다크 그레이 색상 */
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
+    color: #555; /* 중간 그레이 */
+
+    & span {
+      color: #d92525;
+      margin-left: 4px;
+    }
   }
 
   & h3 {
-    display: inline;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     margin-bottom: 4px;
 
     & span {
@@ -69,11 +78,10 @@ export const ButtonWrapper = styled.div`
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: #f7f7f7;
+  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
-  /* 버튼 위쪽에 그라데이션 추가 */
   &::before {
     content: '';
     position: absolute;
@@ -81,12 +89,7 @@ export const ButtonWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 30px;
-    background: linear-gradient(
-      to bottom,
-      rgba(247, 247, 247, 0) 0%,
-      /* 투명한 시작 */ rgba(247, 247, 247, 0.7) 100%
-        /* 버튼 색과 자연스럽게 연결되는 흐린 그라데이션 */
-    );
+    background: transparent;
     z-index: -1;
   }
 `;
@@ -94,21 +97,22 @@ export const ButtonWrapper = styled.div`
 export const Button = styled.button`
   width: 100%;
   height: 45px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
+  margin: 0 4px;
   border: none;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.point1};
+  background-color: rgba(74, 144, 226, 1);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.point2};
+    background-color: rgba(74, 144, 226, 1);
   }
 
   &:disabled {
-    background-color: #ccc;
+    background-color: rgba(204, 204, 204, 1);
     color: white;
     cursor: default;
   }

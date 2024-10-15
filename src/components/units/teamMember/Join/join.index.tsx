@@ -20,7 +20,7 @@ export default function Join() {
   // '제출했던 시간을 수정하고 싶어요' 버튼
   const onClickEditButton = async () => {
     if (!name) {
-      setErrorMessage('이름을 입력해주세요');
+      setErrorMessage('* 이름을 입력해주세요');
       return;
     }
 
@@ -32,7 +32,7 @@ export default function Join() {
       const docSnap = await getDoc(teamMemberRef);
 
       if (!docSnap.exists()) {
-        setErrorMessage('일치하는 이름이 없습니다.');
+        setErrorMessage('* 일치하는 이름이 없습니다.');
         return;
       }
 
@@ -86,14 +86,12 @@ export default function Join() {
   return (
     <S.Wrapper>
       <S.Container>
-        <S.Section style={{ display: 'flex', flexDirection: 'row' }}>
+        <div>
           <img src="/images/icons/animated/calendar_icon.webp" />
-          <S.InnerText>
-            순식간에 정하는
-            <br />
-            <span>우리팀 회의 일정</span>
-          </S.InnerText>
-        </S.Section>
+          <S.Title>
+            순식간에 정하는 <span>우리팀 회의 일정</span>
+          </S.Title>
+        </div>
         <S.Section>
           <h2>참여자님의 이름을 적어주세요</h2>
           <h3>팀원들이 알아볼 수 있는 이름이어야 해요!</h3>
@@ -102,15 +100,14 @@ export default function Join() {
             value={name}
             onChange={handleNameChange}
           />
+          {/* 에러 메시지 표시 */}
+          {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
         </S.Section>
 
-        {/* 에러 메시지 표시 */}
-        {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
-
         <S.ButtonWrapper>
-          <S.SubButton onClick={onClickEditButton}>
-            제출했던 시간을 수정하고 싶어요 ＞
-          </S.SubButton>
+          <S.EditButton onClick={onClickEditButton}>
+            제출한 시간 수정
+          </S.EditButton>
           <S.Button onClick={onClickAddButton} disabled={!name}>
             가능한 시간 입력
           </S.Button>

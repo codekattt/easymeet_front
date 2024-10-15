@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  background: rgba(255, 255, 255, 0.1);
 `;
 
 export const InnerWrapper = styled.div`
@@ -14,11 +15,10 @@ export const InnerWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
-  border-bottom: 1px solid;
-  border-color: ${({ theme }) => theme.colors.menuDivide};
-  background-color: #fff;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.subLine};
+  background: rgba(255, 255, 255, 0.25);
   padding: 12px 0;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 `;
 
 export const InnerLogo = styled.div`
@@ -26,5 +26,6 @@ export const InnerLogo = styled.div`
 
   & img {
     width: 162px;
+    max-width: 100%;
   }
 `;

@@ -69,7 +69,6 @@ export default function Complete() {
           <S.ModalTitle>링크가 복사되었습니다.</S.ModalTitle>
         </S.ModalContentWrapper>
       </S.CustomModal>
-      ;
     </S.Wrapper>
   );
 }

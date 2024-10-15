@@ -8,7 +8,7 @@ import { doc, updateDoc, Timestamp } from 'firebase/firestore';
 
 export default function AdditionalSettings() {
   const router = useRouter();
-  const { meetingId } = router.query; // router.query에서 meetingId를 가져옴
+  const { meetingId } = router.query;
 
   const timeOptions = [
     { value: '30분', label: '30분' },
@@ -22,7 +22,6 @@ export default function AdditionalSettings() {
   const locationOptions = [
     { value: '온라인', label: '온라인' },
     { value: '오프라인', label: '오프라인' },
-    { value: '미지정', label: '미지정' },
   ];
 
   const [selectedTime, setSelectedTime] =
@@ -30,22 +29,22 @@ export default function AdditionalSettings() {
   const [selectedLocation, setSelectedLocation] =
     useState<SingleValue<{ value: string; label: string }>>(null);
   const [customLocation, setCustomLocation] = useState('');
-  const [placeholder, setPlaceholder] = useState(
-    '구체적인 장소를 작성해주세요(선택)',
-  );
-  const [showInput, setShowInput] = useState(true);
+  const [placeholder, setPlaceholder] = useState('구체적인 장소(선택)');
+  const [showInput, setShowInput] = useState(false); // 기본적으로 인풋 비활성화
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   const onChangeLocation = (selectedOption: any) => {
     setSelectedLocation(selectedOption);
-    if (selectedOption?.value === '온라인') {
+
+    if (!selectedOption) {
+      // 삭제 버튼 클릭 시 선택값이 없으면 인풋 필드 비활성화
+      setShowInput(false);
+    } else if (selectedOption?.value === '온라인') {
       setPlaceholder('온라인 화상회의 툴을 작성해주세요');
       setShowInput(true);
     } else if (selectedOption?.value === '오프라인') {
-      setPlaceholder('구체적인 장소를 작성해주세요(선택)');
+      setPlaceholder('구체적인 장소(선택)');
       setShowInput(true);
-    } else if (selectedOption?.value === '미지정') {
-      setShowInput(false);
     }
   };
 
@@ -54,12 +53,15 @@ export default function AdditionalSettings() {
   };
 
   useEffect(() => {
-    if (selectedTime || selectedLocation || customLocation) {
+    if (
+      selectedTime ||
+      (selectedLocation && (showInput ? customLocation.trim() !== '' : true))
+    ) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  }, [selectedTime, selectedLocation, customLocation]);
+  }, [selectedTime, selectedLocation, customLocation, showInput]);
 
   const handleCustomLocationChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -127,7 +129,7 @@ export default function AdditionalSettings() {
           )}
         </S.Section>
         <S.ButtonWrapper>
-          <S.PassButton onClick={onClickPass}>건너뛰기 ＞</S.PassButton>
+          <S.Button onClick={onClickPass}>건너뛰기</S.Button>
           <S.Button onClick={saveAddDataToFB} disabled={!isButtonEnabled}>
             추가 설정 입력
           </S.Button>

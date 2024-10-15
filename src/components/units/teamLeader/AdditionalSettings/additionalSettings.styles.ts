@@ -67,7 +67,8 @@ export const Section = styled.section`
 `;
 
 export const Input = styled.input`
-  width: 80%;
+  width: 60%;
+  min-width: 166px;
   height: 40px;
   padding: 10px 15px;
   border: 1px solid rgba(102, 102, 255, 0.5); /* 더 두드러지는 경계선 */
@@ -148,7 +149,6 @@ export const PassButton = styled.span`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   position: fixed;
   bottom: 0;
@@ -177,6 +177,7 @@ export const Button = styled.button`
   height: 45px;
   font-size: 18px;
   font-weight: 600;
+  margin: 0 4px;
   border: none;
   border-radius: 10px;
   background-color: rgba(74, 144, 226, 1);

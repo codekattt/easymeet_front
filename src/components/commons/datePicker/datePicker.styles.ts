@@ -102,7 +102,6 @@ export const Day = styled.div<{
   align-items: center;
   text-align: center;
   padding: 5px;
-  font-size: 20px;
   width: 100%;
 
   & span {
@@ -121,7 +120,7 @@ export const Day = styled.div<{
   }
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 18px;
     padding: 15% 0;
 
     & span {
