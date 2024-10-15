@@ -7,6 +7,18 @@ export const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
+export const RowWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+
+  & img {
+    width: 40px;
+    margin-bottom: 0;
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,7 +37,7 @@ export const Container = styled.div`
     max-width: 100%;
     height: auto;
     align-self: center;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
   }
 
   & h1 {
@@ -51,6 +63,18 @@ export const Container = styled.div`
     font-size: 16px;
     font-weight: 300;
     color: #666;
+  }
+`;
+
+export const Title = styled.h4`
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-left: 4px;
+  color: rgba(74, 144, 226, 1);
+
+  & span {
+    font-weight: 700;
   }
 `;
 

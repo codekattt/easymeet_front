@@ -7,6 +7,18 @@ export const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
+export const RowWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 8px;
+
+  & img {
+    width: 40px;
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +42,6 @@ export const Container = styled.div`
     width: 40px;
     height: auto;
     align-self: center;
-    margin-bottom: 7px;
   }
 
   & h1 {
@@ -80,8 +91,7 @@ export const Title = styled.h4`
   font-weight: 400;
   line-height: 1.4;
   margin-left: 4px;
-  padding-bottom: 8px;
-  color: ${({ theme }) => theme.colors.point2};
+  color: rgba(74, 144, 226, 1);
 
   & span {
     font-weight: 700;

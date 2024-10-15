@@ -4,8 +4,20 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1); /* 배경 투명도 추가 */
+  background: rgba(255, 255, 255, 0.1);
   align-items: center;
+`;
+
+export const RowWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+
+  & img {
+    width: 40px;
+    margin-bottom: 0;
+  }
 `;
 
 export const Container = styled.div`
@@ -15,32 +27,24 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 */
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  /* border-radius: 20px; */
-  background: rgba(255, 255, 255, 0.3); /* 글래스모피즘 스타일 투명도 */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 약한 경계선 */
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 20px;
-
-  & img {
-    max-width: 100%;
-    height: auto;
-    align-self: center;
-    margin-bottom: 7px;
-  }
 
   & h1 {
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #333; /* 다크 그레이 색상 */
+    color: #333;
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #555; /* 중간 그레이 */
+    color: #555;
 
     & span {
       color: #d92525;
@@ -55,15 +59,27 @@ export const Container = styled.div`
   }
 `;
 
+export const Title = styled.h4`
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-left: 4px;
+  color: rgba(74, 144, 226, 1);
+
+  & span {
+    font-weight: 700;
+  }
+`;
+
 export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  padding: 30px 20px; /* 더 넉넉한 패딩 */
-  background: rgba(255, 255, 255, 0.25); /* 섹션 배경 투명도 조정 */
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 15px 0; /* 섹션 간의 간격 추가 */
+  margin: 15px 0;
 `;
 
 export const Input = styled.input`
@@ -71,15 +87,15 @@ export const Input = styled.input`
   min-width: 166px;
   height: 40px;
   padding: 10px 15px;
-  border: 1px solid rgba(102, 102, 255, 0.5); /* 더 두드러지는 경계선 */
+  border: 1px solid rgba(102, 102, 255, 0.5);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2); /* 글래스모피즘 효과 */
+  background: rgba(255, 255, 255, 0.2);
   font-size: 16px;
   color: #333;
   margin: 12px 0 0 0;
 
   &:focus {
-    border: 2px solid #4a90e2; /* 포커스 상태에서 더 진한 경계선 */
+    border: 2px solid #4a90e2;
     outline: none;
   }
 `;

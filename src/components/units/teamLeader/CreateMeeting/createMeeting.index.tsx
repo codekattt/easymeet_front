@@ -151,7 +151,12 @@ export default function CreateMeeting() {
   return (
     <S.Wrapper>
       <S.Container>
-        <h1>40초만에 일정 만들기</h1>
+        <S.RowWrapper>
+          <img src="/images/icons/animated/calendar_icon.apng" />
+          <S.Title>
+            <span>40초만에</span> 일정 만들기
+          </S.Title>
+        </S.RowWrapper>
         <S.Section>
           <h2>
             어떤 방식으로 회의날짜를 정할까요?<span>*</span>

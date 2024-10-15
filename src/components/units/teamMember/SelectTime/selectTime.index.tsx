@@ -150,6 +150,12 @@ export default function SelectTime() {
   return (
     <S.Wrapper>
       <S.Container>
+        <S.RowWrapper>
+          <img src="/images/icons/animated/clock_icon.apng" />
+          <S.Title>
+            <span>나의 가능시간</span> 입력
+          </S.Title>
+        </S.RowWrapper>
         {!isMeetingInfoEmpty && (
           <>
             <S.Section>
@@ -165,7 +171,6 @@ export default function SelectTime() {
             <img
               src="/images/icons/common/DownOutlined.svg"
               alt="아래 화살표"
-              style={{ marginBottom: '12px' }}
             />
           </>
         )}

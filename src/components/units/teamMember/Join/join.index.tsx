@@ -86,12 +86,12 @@ export default function Join() {
   return (
     <S.Wrapper>
       <S.Container>
-        <div>
-          <img src="/images/icons/animated/calendar_icon.webp" />
+        <S.RowWrapper>
+          <img src="/images/icons/animated/account_icon.apng" />
           <S.Title>
-            순식간에 정하는 <span>우리팀 회의 일정</span>
+            빠르게 정하는 <span>우리팀 일정</span>
           </S.Title>
-        </div>
+        </S.RowWrapper>
         <S.Section>
           <h2>참여자님의 이름을 적어주세요</h2>
           <h3>팀원들이 알아볼 수 있는 이름이어야 해요!</h3>

@@ -39,7 +39,10 @@ export default function Complete() {
     <S.Wrapper>
       <S.Container>
         <S.Section>
-          <img src="/images/icons/animated/check_icon.apng" alt="check icon" />
+          <img
+            src="/images/icons/animated/complete_check_icon.apng"
+            alt="check icon"
+          />
           <span>
             순식간에 회의페이지 생성 완료!
             <br />
@@ -52,7 +55,7 @@ export default function Complete() {
               <img src="/images/icons/common/LinkOutlined.svg" /> 링크복사
             </div>
           </S.Button>
-          <S.Button onClick={onClickButton}>나도 가능시간 입력하기</S.Button>
+          <S.Button onClick={onClickButton}>내 가능시간 입력</S.Button>
         </S.ButtonWrapper>
       </S.Container>
       {/* Ant Design 모달 */}

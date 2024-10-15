@@ -7,6 +7,19 @@ export const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
+export const RowWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 8px;
+
+  & img {
+    width: 40px;
+    margin-bottom: 0 !important;
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,14 +44,14 @@ export const Container = styled.div`
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #333; /* 다크 그레이 색상 */
+    color: #333;
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 6px;
-    color: #555; /* 중간 그레이 */
+    color: #555;
 
     & span {
       color: #d92525;
@@ -55,6 +68,18 @@ export const Container = styled.div`
       color: ${({ theme }) => theme.colors.point1};
       font-weight: 700;
     }
+  }
+`;
+
+export const Title = styled.h4`
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-left: 4px;
+  color: rgba(74, 144, 226, 1);
+
+  & span {
+    font-weight: 700;
   }
 `;
 

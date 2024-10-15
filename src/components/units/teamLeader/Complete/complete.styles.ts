@@ -16,11 +16,10 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 */
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  /* border-radius: 20px; */
-  background: rgba(255, 255, 255, 0.3); /* 글래스모피즘 스타일 투명도 */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 약한 경계선 */
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 20px;
 
   & img {
@@ -34,14 +33,14 @@ export const Container = styled.div`
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #333; /* 다크 그레이 색상 */
+    color: #333;
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #555; /* 중간 그레이 */
+    color: #555;
 
     & span {
       color: #d92525;
@@ -65,23 +64,22 @@ export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  padding: 30px 20px; /* 더 넉넉한 패딩 */
-  background: rgba(255, 255, 255, 0.25); /* 섹션 배경 투명도 조정 */
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 15px 0; /* 섹션 간의 간격 추가 */
+  margin: 15px 0;
 
   & img {
-    width: 250px;
-    margin-top: 20px;
+    width: 200px;
   }
 
   & span {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.4;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.6;
     text-align: center;
-    margin: 30px 0;
+    margin: 16px 0;
     color: ${({ theme }) => theme.colors.fontMain};
   }
 `;

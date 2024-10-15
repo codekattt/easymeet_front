@@ -51,14 +51,14 @@ export const Container = styled.div`
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #333; /* 다크 그레이 색상 */
+    color: #333;
   }
 
   & h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 14px;
-    color: #555; /* 중간 그레이 */
+    color: #555;
 
     & span {
       color: #d92525;
@@ -78,7 +78,7 @@ export const Title = styled.h4`
   font-weight: 400;
   line-height: 1.4;
   margin-left: 4px;
-  color: ${({ theme }) => theme.colors.point2};
+  color: rgba(74, 144, 226, 1);
 
   & span {
     font-weight: 700;
