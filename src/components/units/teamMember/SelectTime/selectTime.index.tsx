@@ -152,9 +152,7 @@ export default function SelectTime() {
       <S.Container>
         <S.RowWrapper>
           <img src="/images/icons/animated/clock_icon.apng" />
-          <S.Title>
-            <span>나의 가능시간</span> 입력
-          </S.Title>
+          <h1>나의 가능시간 입력</h1>
         </S.RowWrapper>
         {!isMeetingInfoEmpty && (
           <>

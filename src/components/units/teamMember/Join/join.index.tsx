@@ -88,9 +88,7 @@ export default function Join() {
       <S.Container>
         <S.RowWrapper>
           <img src="/images/icons/animated/account_icon.apng" />
-          <S.Title>
-            빠르게 정하는 <span>우리팀 일정</span>
-          </S.Title>
+          <h1>빠르게 정하는 우리팀 일정</h1>
         </S.RowWrapper>
         <S.Section>
           <h2>참여자님의 이름을 적어주세요</h2>

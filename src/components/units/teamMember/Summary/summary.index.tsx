@@ -183,13 +183,8 @@ export default function Summary() {
     <S.Wrapper>
       <S.Container>
         <S.RowWrapper>
-          <img
-            src="/images/icons/animated/check_icon.apng"
-            style={{ width: '40px' }}
-          />
-          <S.Title>
-            가능 시간 <span>설정 완료</span>
-          </S.Title>
+          <img src="/images/icons/animated/check_icon.apng" />
+          <h1>가능시간 설정완료</h1>
         </S.RowWrapper>
         <S.Section>
           <h2>지금까지 유력한 회의 정보</h2>

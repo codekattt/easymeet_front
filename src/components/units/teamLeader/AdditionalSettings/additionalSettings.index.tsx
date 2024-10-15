@@ -97,9 +97,9 @@ export default function AdditionalSettings() {
       <S.Container>
         <S.RowWrapper>
           <img src="/images/icons/animated/add_icon.apng" />
-          <S.Title>
+          <h1>
             <span>추가 설정</span>하기
-          </S.Title>
+          </h1>
         </S.RowWrapper>
         <S.Section>
           <h2>회의는 몇 시간동안 진행되나요?</h2>

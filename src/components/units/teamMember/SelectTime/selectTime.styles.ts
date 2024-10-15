@@ -12,10 +12,11 @@ export const RowWrapper = styled.div`
   flex-direction: row;
   justify-content: left;
   align-items: center;
-  margin-bottom: 8px;
 
   & img {
-    width: 40px;
+    width: clamp(30px, 5vw, 40px);
+    height: auto;
+    max-width: 100%;
     margin-bottom: 0 !important;
   }
 `;
@@ -37,18 +38,18 @@ export const Container = styled.div`
     max-width: 100%;
     height: auto;
     align-self: center;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
   }
 
   & h1 {
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #333;
+    margin-left: 4px;
+    color: rgba(74, 144, 226, 1);
   }
 
   & h2 {
-    font-size: 20px;
+    font-size: clamp(16px, 3.5vw, 20px);
     font-weight: 700;
     margin-bottom: 6px;
     color: #555;
@@ -60,26 +61,14 @@ export const Container = styled.div`
   }
 
   & h3 {
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 300;
-    margin-bottom: 4px;
+    color: #666;
 
     & span {
       color: ${({ theme }) => theme.colors.point1};
       font-weight: 700;
     }
-  }
-`;
-
-export const Title = styled.h4`
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 1.4;
-  margin-left: 4px;
-  color: rgba(74, 144, 226, 1);
-
-  & span {
-    font-weight: 700;
   }
 `;
 

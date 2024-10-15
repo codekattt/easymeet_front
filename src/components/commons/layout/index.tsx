@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import LayoutHeader from './header/LayoutHeader.index';
+import LayoutFooter from './footer/LayoutFooter.index';
 
 const Body = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ export default function Layout(props: ILayoutProps): JSX.Element {
     <>
       <LayoutHeader />
       <Body>{props.children}</Body>
+      {/* <LayoutFooter /> */}
     </>
   );
 }

@@ -153,9 +153,9 @@ export default function CreateMeeting() {
       <S.Container>
         <S.RowWrapper>
           <img src="/images/icons/animated/calendar_icon.apng" />
-          <S.Title>
+          <h1>
             <span>40초만에</span> 일정 만들기
-          </S.Title>
+          </h1>
         </S.RowWrapper>
         <S.Section>
           <h2>
@@ -212,31 +212,6 @@ export default function CreateMeeting() {
             </S.WeekdaysWrapper>
           </S.Section>
         )}
-        <S.Section style={{ display: 'none' }}>
-          <h2>
-            회의 시간은<span>*</span>
-          </h2>
-          <S.SelectWrapper>
-            <Select
-              options={timeOptions}
-              styles={S.SelectTimeStyles}
-              onChange={(option) => setSelectedStartTime(option)}
-              value={selectedStartTime}
-              isSearchable={false}
-            />
-            <h3>보다 이후,</h3>
-          </S.SelectWrapper>
-          <S.SelectWrapper>
-            <Select
-              options={endTimeOptions}
-              styles={S.SelectTimeStyles}
-              onChange={(option) => setSelectedEndTime(option)}
-              value={selectedEndTime}
-              isSearchable={false}
-            />
-            <h3>보다 이전으로 선택할거예요</h3>
-          </S.SelectWrapper>
-        </S.Section>
         <S.Section style={{ marginBottom: '100px' }}>
           <h2>회의의 이름을 지어주세요</h2>
           <S.Input

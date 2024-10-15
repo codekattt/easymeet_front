@@ -34,14 +34,15 @@ export const Container = styled.div`
   padding-bottom: 20px;
 
   & h1 {
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #333;
+    line-height: 1.4;
+    margin-left: 4px;
+    color: rgba(74, 144, 226, 1);
   }
 
   & h2 {
-    font-size: 20px;
+    font-size: clamp(16px, 3.5vw, 20px);
     font-weight: 700;
     margin-bottom: 20px;
     color: #555;
@@ -53,21 +54,9 @@ export const Container = styled.div`
   }
 
   & h3 {
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 300;
     color: #666;
-  }
-`;
-
-export const Title = styled.h4`
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 1.4;
-  margin-left: 4px;
-  color: rgba(74, 144, 226, 1);
-
-  & span {
-    font-weight: 700;
   }
 `;
 
@@ -172,7 +161,7 @@ export const ButtonWrapper = styled.div`
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.25); /* 글래스모피즘 효과 */
+  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
@@ -191,7 +180,7 @@ export const ButtonWrapper = styled.div`
 export const Button = styled.button`
   width: 100%;
   height: 45px;
-  font-size: 18px;
+  font-size: clamp(16px, 3vw, 18px);
   font-weight: 600;
   margin: 0 4px;
   border: none;

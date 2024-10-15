@@ -15,7 +15,10 @@ export const RowWrapper = styled.div`
   margin-bottom: 8px;
 
   & img {
-    width: 24px;
+    width: clamp(30px, 5vw, 40px);
+    height: auto;
+    max-width: 100%;
+    margin-bottom: 0 !important;
   }
 
   & h3 {
@@ -41,23 +44,17 @@ export const Container = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 20px;
 
-  & img {
-    max-width: 100%;
-    height: auto;
-    align-self: center;
-  }
-
   & h1 {
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #333;
+    margin-left: 4px;
+    color: rgba(74, 144, 226, 1);
   }
 
   & h2 {
-    font-size: 20px;
+    font-size: clamp(16px, 3.5vw, 20px);
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
     color: #555;
 
     & span {
@@ -67,7 +64,7 @@ export const Container = styled.div`
   }
 
   & h3 {
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 300;
     color: #666;
   }
