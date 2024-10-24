@@ -1,17 +1,6 @@
 declare module '@emotion/react' {
   export interface Theme {
-    colors: {
-      point1: string;
-      point2: string;
-      point3: string;
-      fontMain: string;
-      subFont1: string;
-      subFont2: string;
-      subLine: string;
-      alert: string;
-      valid: string;
-      menuDivide: string;
-    };
+    colors: Record<string, string>;
   }
 }
 

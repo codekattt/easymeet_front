@@ -12,12 +12,12 @@ export const RowWrapper = styled.div`
   flex-direction: row;
   justify-content: left;
   align-items: center;
+  margin: 0 0 15px 0;
 
   & img {
     width: clamp(30px, 5vw, 40px);
     height: auto;
     max-width: 100%;
-    margin-bottom: 0 !important;
   }
 `;
 
@@ -32,7 +32,6 @@ export const Container = styled.div`
   padding: 20px;
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 20px;
 
   & h1 {
     font-size: clamp(22px, 5vw, 28px);
@@ -46,11 +45,6 @@ export const Container = styled.div`
     font-weight: 700;
     margin-bottom: 6px;
     color: #555;
-
-    & span {
-      color: #d92525;
-      margin-left: 4px;
-    }
   }
 
   & h3 {
@@ -69,7 +63,7 @@ export const Section = styled.section`
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 15px 0;
+  margin: 0 0 15px 0;
 `;
 
 export const Input = styled.input`

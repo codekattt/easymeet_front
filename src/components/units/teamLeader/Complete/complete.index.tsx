@@ -43,11 +43,11 @@ export default function Complete() {
             src="/images/icons/animated/complete_check_icon.apng"
             alt="check icon"
           />
-          <span>
+          <h2>
             순식간에 회의페이지 생성 완료!
             <br />
             팀원들에게 공유해보세요
-          </span>
+          </h2>
         </S.Section>
         <S.ButtonWrapper>
           <S.Button onClick={onClickCopyLink}>

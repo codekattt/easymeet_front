@@ -7,15 +7,19 @@ export const Wrapper = styled.div`
 `;
 
 export const TimeWrapper = styled.div`
-  margin-right: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 자식 요소 사이의 간격을 동일하게 만듦 */
   align-items: center;
-  padding-top: 41px; /* 시작점에서 약간의 여백을 줌 */
-  margin-bottom: -24px; /* 끝 지점에서 약간의 여백을 줌 */
   font-size: 14px;
   color: rgba(74, 144, 226, 1);
+  margin-right: 10px;
+  margin-bottom: -24px; /* 끝 지점에서 약간의 여백을 줌 */
+  padding-top: 41px; /* 시작점에서 약간의 여백을 줌 */
+
+  @media (max-width: 280px) {
+    font-size: 11px;
+  }
 `;
 
 export const WeekWrapper = styled.div`
@@ -42,11 +46,19 @@ export const Day = styled.div`
     font-size: 12px;
     color: rgba(74, 144, 226, 1);
     margin-bottom: 2px;
+
+    @media (max-width: 380px) {
+      font-size: 8px;
+    }
   }
 
   /* 두 번째 span (요일) */
   span:last-of-type {
     font-size: 14px;
+
+    @media (max-width: 280px) {
+      font-size: 11px;
+    }
   }
 `;
 
@@ -97,7 +109,7 @@ export const Cell = styled.div<{
     (isStart || isEnd) &&
     !(isStart && isEnd) &&
     `
-      border: 2px solid ${theme.colors.point3} !important; 
+      border: 2px solid ${theme.colors.point3} !important;
     `}
 
   /* 5번 중복 선택된 셀에 노란색 테두리 */

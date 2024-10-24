@@ -9,16 +9,17 @@ export const Wrapper = styled.div`
 `;
 
 export const DatePicker = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 40px 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 0 15px 0;
 `;
 
 export const Header = styled.div`
@@ -36,7 +37,7 @@ export const PrevButton = styled.button`
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
   border-radius: 50%;
-  padding: 2px;
+  padding: 3px;
 
   &:hover {
     background-color: rgba(103, 115, 239, 0.2);

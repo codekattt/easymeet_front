@@ -153,9 +153,7 @@ export default function CreateMeeting() {
       <S.Container>
         <S.RowWrapper>
           <img src="/images/icons/animated/calendar_icon.apng" />
-          <h1>
-            <span>40초만에</span> 일정 만들기
-          </h1>
+          <h1>40초만에 일정 만들기</h1>
         </S.RowWrapper>
         <S.Section>
           <h2>

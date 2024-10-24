@@ -12,6 +12,7 @@ export const RowWrapper = styled.div`
   flex-direction: row;
   justify-content: left;
   align-items: center;
+  margin: 0 0 15px 0;
 
   & img {
     width: clamp(30px, 5vw, 40px);
@@ -38,7 +39,7 @@ export const Container = styled.div`
     max-width: 100%;
     height: auto;
     align-self: center;
-    margin-bottom: 8px;
+    margin: 0 0 12px 0;
   }
 
   & h1 {
@@ -75,7 +76,7 @@ export const Section = styled.section`
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 15px 0;
+  margin: 0 0 15px 0;
 `;
 
 export const RadioWrapper = styled.div`

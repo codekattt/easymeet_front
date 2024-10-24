@@ -12,18 +12,13 @@ export const RowWrapper = styled.div`
   flex-direction: row;
   justify-content: left;
   align-items: center;
-  margin-bottom: 8px;
+  margin: 0 0 15px 0;
 
   & img {
     width: clamp(30px, 5vw, 40px);
     height: auto;
     max-width: 100%;
     margin-bottom: 0 !important;
-  }
-
-  & h3 {
-    margin-left: 8px;
-    font-weight: 400;
   }
 
   &:last-child {
@@ -56,39 +51,23 @@ export const Container = styled.div`
     font-weight: 700;
     margin-bottom: 20px;
     color: #555;
-
-    & span {
-      color: #d92525;
-      margin-left: 4px;
-    }
   }
 
   & h3 {
     font-size: clamp(14px, 3vw, 16px);
-    font-weight: 300;
+    font-weight: 400;
     color: #666;
-  }
-`;
-
-export const Title = styled.h4`
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 1.4;
-  margin-left: 4px;
-  color: rgba(74, 144, 226, 1);
-
-  & span {
-    font-weight: 700;
+    margin-left: 8px;
   }
 `;
 
 export const Section = styled.section`
   width: 100%;
   height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 20px;
-  padding: 30px 20px;
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 15px 0;
+  margin: 0 0 15px 0;
+  padding: 30px 20px;
 `;

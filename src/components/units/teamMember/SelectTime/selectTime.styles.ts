@@ -12,6 +12,7 @@ export const RowWrapper = styled.div`
   flex-direction: row;
   justify-content: left;
   align-items: center;
+  margin: 0 0 15px 0;
 
   & img {
     width: clamp(30px, 5vw, 40px);
@@ -38,7 +39,7 @@ export const Container = styled.div`
     max-width: 100%;
     height: auto;
     align-self: center;
-    margin-bottom: 8px;
+    margin: 0 0 12px 0;
   }
 
   & h1 {
@@ -53,11 +54,6 @@ export const Container = styled.div`
     font-weight: 700;
     margin-bottom: 6px;
     color: #555;
-
-    & span {
-      color: #d92525;
-      margin-left: 4px;
-    }
   }
 
   & h3 {
@@ -80,7 +76,7 @@ export const Section = styled.section`
   padding: 25px 15px 22px 15px;
   background-color: white;
   box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
-  margin: 0 0 12px 0;
+  margin: 0 0 15px 0;
 `;
 
 export const ButtonWrapper = styled.div`

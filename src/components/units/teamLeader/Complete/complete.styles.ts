@@ -10,23 +10,22 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 20px;
 
   & img {
     max-width: 100%;
     height: auto;
     align-self: center;
-    margin-bottom: 7px;
+    margin: 12px;
   }
 
   & h1 {
@@ -39,20 +38,11 @@ export const Container = styled.div`
 
   & h2 {
     font-size: clamp(16px, 3.5vw, 20px);
-    font-weight: 700;
-    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.6;
+    margin: 12px 12px 20px 12px;
     color: #555;
-
-    & span {
-      color: #d92525;
-      margin-left: 4px;
-    }
-  }
-
-  & h3 {
-    font-size: clamp(14px, 3vw, 16px);
-    font-weight: 300;
-    color: #666;
   }
 `;
 
@@ -65,7 +55,7 @@ export const Section = styled.section`
   width: 100%;
   height: auto;
   border-radius: 20px;
-  padding: 0 20px;
+  padding: 20px;
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
