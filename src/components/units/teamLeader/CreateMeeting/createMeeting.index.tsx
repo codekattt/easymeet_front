@@ -1,11 +1,16 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import DatePicker from '../../../commons/datePicker/datePicker.index';
-import Select, { SingleValue } from 'react-select';
+import dynamic from 'next/dynamic';
+import { SingleValue } from 'react-select';
 import * as S from './createMeeting.styles';
 
 import { db } from '../../../../commons/libraries/firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
+
+const DatePicker = dynamic(
+  () => import('../../../commons/datePicker/datePicker.index'),
+  { ssr: false },
+);
 
 export default function CreateMeeting() {
   const router = useRouter();
@@ -13,6 +18,7 @@ export default function CreateMeeting() {
   const [meetingType, setMeetingType] = useState('date');
   const [meetingName, setMeetingName] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [isTestEnvironment, setIsTestEnvironment] = useState(false);
 
   // 요일 선택을 위한 상태
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
@@ -71,6 +77,10 @@ export default function CreateMeeting() {
   const timeOptions = generateTimeOptions();
 
   useEffect(() => {
+    setIsTestEnvironment(window.location.hostname === 'localhost');
+  }, []);
+
+  useEffect(() => {
     if (selectedStartTime) {
       const startHour = parseInt(selectedStartTime.value.split(':')[0], 10);
       const updatedOptions = timeOptions.filter(
@@ -121,9 +131,6 @@ export default function CreateMeeting() {
             (a, b) => weekdayOrder.indexOf(a) - weekdayOrder.indexOf(b),
           );
 
-    // 현재 환경이 테스트 환경인지 확인
-    const isTestEnvironment = window.location.hostname === 'localhost';
-
     const meetingData = {
       type: meetingType,
       dates: formattedDates,
@@ -131,7 +138,7 @@ export default function CreateMeeting() {
       endTime: selectedEndTime?.value || '24:00',
       meetingName: meetingName || '',
       createAt: Timestamp.now(),
-      environment: isTestEnvironment ? 'test' : 'production', // 환경 정보 추가
+      environment: isTestEnvironment ? 'test' : 'production',
     };
 
     try {
@@ -145,7 +152,6 @@ export default function CreateMeeting() {
 
   const onClickButton = () => {
     saveDataToFB();
-    router.push('/leader?step=add');
   };
 
   return (
