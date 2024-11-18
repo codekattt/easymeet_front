@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: white;
   border-radius: 20px;
 `;
 
@@ -13,10 +12,9 @@ export const DatePicker = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid none;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
+  background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 40px 0;
   margin: 0 0 15px 0;
@@ -34,8 +32,7 @@ export const PrevButton = styled.button`
   cursor: pointer;
   border: none;
   margin: 0 12px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
+  background: white;
   border-radius: 50%;
   padding: 3px;
 
@@ -61,8 +58,6 @@ export const DaysOfWeek = styled.div`
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
   padding: 15px 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
   border-radius: 10px;
 `;
 
@@ -98,14 +93,12 @@ export const Day = styled.div<{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: clamp(14px, 3.5vw, 18px);
     border-radius: 25%;
-    background-color: ${({ isSelected }) =>
-      isSelected ? '#4A90E2' : 'rgba(255, 255, 255, 0.2)'};
+    background-color: ${({ isSelected }) => (isSelected ? '#4A90E2' : 'white')};
     color: ${({ isValid, isSelected }) =>
       isValid ? (isSelected ? 'white' : 'black') : '#ABABAB'};
     cursor: ${({ isValid }) => (isValid ? 'pointer' : 'default')};
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    font-size: clamp(14px, 3.5vw, 18px);
   }
 
   @media (max-width: 768px) {
@@ -131,10 +124,8 @@ export const Day = styled.div<{
 export const WarningMessage = styled.p`
   color: ${({ theme }) => theme.colors.alert};
   font-size: clamp(12px, 3vw, 14px);
-  margin: 8px 0 0 4px;
+  margin: 0 0 15px 0;
   text-align: left;
-  background: rgba(255, 255, 255, 0.1);
   padding: 10px;
   border-radius: 10px;
-  backdrop-filter: blur(5px);
 `;

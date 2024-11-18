@@ -4,7 +4,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
   align-items: center;
 `;
 
@@ -28,18 +27,15 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 
   & h1 {
     font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
     line-height: 1.4;
     margin-left: 4px;
-    color: rgba(74, 144, 226, 1);
+    color: #4a90e2;
   }
 
   & h2 {
@@ -61,9 +57,8 @@ export const Section = styled.section`
   height: auto;
   border-radius: 20px;
   padding: 30px 20px;
-  background: rgba(255, 255, 255, 0.25);
+  background: white;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
   margin: 0 0 15px 0;
 `;
 
@@ -152,12 +147,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
@@ -181,17 +175,17 @@ export const Button = styled.button`
   margin: 0 4px;
   border: none;
   border-radius: 10px;
-  background-color: rgba(74, 144, 226, 1);
+  background-color: #4a90e2;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(74, 144, 226, 1);
+    background-color: #4a90e2;
   }
 
   &:disabled {
-    background-color: rgba(204, 204, 204, 1);
+    background-color: #cccccc;
     color: white;
     cursor: default;
   }

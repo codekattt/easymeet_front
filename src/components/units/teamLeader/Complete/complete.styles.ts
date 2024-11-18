@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
 `;
 
 export const Container = styled.div`
@@ -16,10 +15,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 
   & img {
     max-width: 100%;
@@ -33,7 +30,7 @@ export const Container = styled.div`
     font-weight: 700;
     line-height: 1.4;
     margin-left: 4px;
-    color: rgba(74, 144, 226, 1);
+    color: #4a90e2;
   }
 
   & h2 {
@@ -56,9 +53,8 @@ export const Section = styled.section`
   height: auto;
   border-radius: 20px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.25);
+  background: white;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 
   & img {
     width: 200px;
@@ -78,12 +74,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
@@ -107,10 +102,10 @@ export const Button = styled.button`
   margin: 0 4px;
   border: none;
   border-radius: 10px;
-  background-color: rgba(74, 144, 226, 1);
+  background-color: #4a90e2;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 
   & div {
     display: flex;
@@ -124,11 +119,11 @@ export const Button = styled.button`
   }
 
   &:hover {
-    background-color: rgba(74, 144, 226, 1);
+    background-color: #4a90e2;
   }
 
   &:disabled {
-    background-color: rgba(204, 204, 204, 1);
+    background-color: #cccccc;
     color: white;
     cursor: default;
   }

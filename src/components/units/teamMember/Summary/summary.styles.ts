@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: white;
 `;
 
 export const RowWrapper = styled.div`
@@ -33,17 +33,14 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 20px;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
 
   & h1 {
     font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
     margin-left: 4px;
-    color: rgba(74, 144, 226, 1);
+    color: #4a90e2;
   }
 
   & h2 {
@@ -64,9 +61,8 @@ export const Container = styled.div`
 export const Section = styled.section`
   width: 100%;
   height: auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.25);
+  background: white;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   margin: 0 0 15px 0;
   padding: 30px 20px;

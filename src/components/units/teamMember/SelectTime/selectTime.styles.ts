@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: white;
 `;
 
 export const RowWrapper = styled.div`
@@ -31,9 +31,6 @@ export const Container = styled.div`
   min-height: 100vh;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 20px;
 
   & img {
     max-width: 100%;
@@ -46,7 +43,7 @@ export const Container = styled.div`
     font-size: clamp(22px, 5vw, 28px);
     font-weight: 700;
     margin-left: 4px;
-    color: rgba(74, 144, 226, 1);
+    color: #4a90e2;
   }
 
   & h2 {
@@ -75,7 +72,7 @@ export const Section = styled.section`
   border: none;
   padding: 25px 15px 22px 15px;
   background-color: white;
-  box-shadow: 1px 4px 10px 0px rgba(180, 181, 248, 0.25);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   margin: 0 0 15px 0;
 `;
 
@@ -83,12 +80,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;
   max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.25);
   padding: 20px;
   z-index: 1000;
 
@@ -107,22 +103,22 @@ export const ButtonWrapper = styled.div`
 export const Button = styled.button`
   width: 100%;
   height: 45px;
-  font-size: 18px;
+  font-size: clamp(16px, 3vw, 18px);
   font-weight: 600;
   margin: 0 4px;
   border: none;
   border-radius: 10px;
-  background-color: rgba(74, 144, 226, 1);
+  background-color: #4a90e2;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(74, 144, 226, 1);
+    background-color: #4a90e2;
   }
 
   &:disabled {
-    background-color: rgba(204, 204, 204, 1);
+    background-color: #cccccc;
     color: white;
     cursor: default;
   }
