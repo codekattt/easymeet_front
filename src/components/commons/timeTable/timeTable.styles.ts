@@ -1,4 +1,18 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+
+// 그라데이션 애니메이션 정의
+const gradientAnimation = keyframes`
+  0% {
+    background-color: #3D439E;
+  }
+  50% {
+    background-color: #2f3379; 
+  }
+  100% {
+    background-color: #3D439E; 
+  }
+`;
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -114,7 +128,7 @@ export const Cell = styled.div<{
 
   /* 5번 중복 선택된 셀에 노란색 테두리 */
   &.five-times-selected {
-    border: 2px solid yellow;
+    animation: ${gradientAnimation} 3s infinite;
   }
 
   /* hover 스타일 */
