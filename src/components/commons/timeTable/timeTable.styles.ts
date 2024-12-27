@@ -2,15 +2,15 @@ import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 
 // 그라데이션 애니메이션 정의
-const gradientAnimation = keyframes`
-  0% {
-    background-color: #3D439E;
+const colorChange = keyframes`
+  0%{
+      background-position: 0% 50%;
   }
-  50% {
-    background-color: #2f3379; 
+  50%{
+      background-position: 100% 50%;
   }
-  100% {
-    background-color: #3D439E; 
+  100%{
+      background-position: 0% 50%;
   }
 `;
 
@@ -128,7 +128,9 @@ export const Cell = styled.div<{
 
   /* 5번 중복 선택된 셀에 노란색 테두리 */
   &.five-times-selected {
-    animation: ${gradientAnimation} 3s infinite;
+    background: linear-gradient(-45deg, #3d439e, #5c63c6, #1f226b);
+    background-size: 400% 400%;
+    animation: ${colorChange} 7s ease infinite;
   }
 
   /* hover 스타일 */
