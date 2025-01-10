@@ -1,51 +1,51 @@
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 
-// 그라데이션 애니메이션 정의
-const colorChange = keyframes`
-  0%{
-      background-position: 0% 50%;
-  }
-  50%{
-      background-position: 100% 50%;
-  }
-  100%{
-      background-position: 0% 50%;
-  }
+// 공통 상수
+const BORDER_COLOR = 'rgba(74, 144, 226, 1)';
+const GRADIENT_COLORS = ['#3d439e', '#5c63c6', '#1f226b'];
+
+// 그라데이션 애니메이션
+const gradientCycle = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 `;
 
+// Wrapper
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
 `;
 
+// 시간 열
 export const TimeWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 자식 요소 사이의 간격을 동일하게 만듦 */
+  justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: rgba(74, 144, 226, 1);
+  color: ${BORDER_COLOR};
   margin-right: 10px;
-  margin-bottom: -24px; /* 끝 지점에서 약간의 여백을 줌 */
-  padding-top: 41px; /* 시작점에서 약간의 여백을 줌 */
+  margin-bottom: -24px;
+  padding-top: 41px;
 
   @media (max-width: 280px) {
     font-size: 11px;
   }
 `;
 
+// 요일 열
 export const WeekWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
+// 요일
 export const DayWrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
   margin-bottom: 14px;
 `;
 
@@ -55,10 +55,10 @@ export const Day = styled.div`
   display: flex;
   flex-direction: column;
 
-  /* 첫 번째 span (날짜) */
+  /* 날짜 스타일 */
   span:first-of-type {
     font-size: 12px;
-    color: rgba(74, 144, 226, 1);
+    color: ${BORDER_COLOR};
     margin-bottom: 2px;
 
     @media (max-width: 380px) {
@@ -66,7 +66,7 @@ export const Day = styled.div`
     }
   }
 
-  /* 두 번째 span (요일) */
+  /* 요일 스타일 */
   span:last-of-type {
     font-size: 14px;
 
@@ -76,14 +76,15 @@ export const Day = styled.div`
   }
 `;
 
+// 셀 래퍼
 export const CellWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  border: 1px solid rgba(74, 144, 226, 1);
+  border: 1px solid ${BORDER_COLOR};
   border-radius: 1px;
   background-color: ${({ theme }) => theme.colors.subLine};
 `;
 
+// 셀
 export const Cell = styled.div<{
   isSelected: boolean;
   isStart: boolean;
@@ -91,34 +92,29 @@ export const Cell = styled.div<{
   isSummary: boolean;
   backgroundColor: string;
 }>`
-  border-right: 1px solid rgba(74, 144, 226, 1);
-  border-bottom: 1px solid rgba(74, 144, 226, 1);
   flex: 1;
   width: 100%;
   min-height: 1.6rem;
   text-align: center;
+  position: relative;
+
+  /* 배경색 설정 */
   background-color: ${({ isSelected, backgroundColor, isSummary, theme }) =>
     isSummary ? backgroundColor : isSelected ? theme.colors.point1 : 'white'};
 
-  /* 30분 구분선 */
+  /* 테두리 스타일 */
+  border-right: 1px solid ${BORDER_COLOR};
+  border-bottom: 1px solid ${BORDER_COLOR};
+
   &:nth-of-type(odd) {
-    border-bottom: 1px dashed rgba(74, 144, 226, 1);
+    border-bottom: 1px dashed ${BORDER_COLOR};
   }
 
-  /* border-bottom 안겹치도록 */
   &:last-of-type {
     border-bottom: none;
   }
 
-  /* 시작과 끝이 모두 선택된 경우 border 제거 */
-  ${({ isStart, isEnd }) =>
-    isStart &&
-    isEnd &&
-    `
-      border: none;
-    `}
-
-  /* 시작 셀과 끝 셀 스타일 적용, 항상 우선적용 */
+  /* 시작/끝 셀 스타일 */
   ${({ isStart, isEnd, theme }) =>
     (isStart || isEnd) &&
     !(isStart && isEnd) &&
@@ -126,17 +122,38 @@ export const Cell = styled.div<{
       border: 2px solid ${theme.colors.point3} !important;
     `}
 
-  /* 5번 중복 선택된 셀에 노란색 테두리 */
+  ${({ isStart, isEnd }) =>
+    isStart &&
+    isEnd &&
+    `
+      border: none;
+    `}
+
+  /* 5번 선택된 셀 */
   &.five-times-selected {
-    background: linear-gradient(-45deg, #3d439e, #5c63c6, #1f226b);
+    /* background: linear-gradient(-45deg, ${GRADIENT_COLORS.join(', ')});
     background-size: 400% 400%;
-    animation: ${colorChange} 7s ease infinite;
+    animation: ${gradientCycle} 7s ease infinite; */
+
+    /* 별표 */
+    &::after {
+      content: '★';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #eee;
+      font-size: 0.75rem;
+      z-index: 1;
+    }
   }
 
   /* hover 스타일 */
   &:hover {
-    border: 2px solid ${({ theme }) => theme.colors.point3};
+    border: 2px solid #666bc4;
   }
 
   transition: background-color 0.1s, border 0.1s;
 `;
+
+// ${({ theme }) => theme.colors.point1}
